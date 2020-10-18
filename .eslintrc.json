@@ -1,0 +1,20 @@
+{
+  "env": {
+    "node": true
+  },
+  "extends": ["airbnb/base", "plugin:prettier/recommended"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
+    }
+  },
+  "rules": {
+    "no-console": "warn",
+    "max-len": "off",
+    "no-underscore-dangle": "off",
+    "no-shadow": "off",
+    "global-require": "off"
+  }
+}
