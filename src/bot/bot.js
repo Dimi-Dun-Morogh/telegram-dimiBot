@@ -1,6 +1,7 @@
 const { Telegraf } = require('telegraf');
 const { botApiKey } = require('../config/telegram');
 const { createChat, getChatByChatId } = require('../controllers/chats');
+const { createMessage, getChatMessages } = require('../controllers/messages');
 
 const bot = new Telegraf(botApiKey);
 
@@ -25,7 +26,17 @@ bot.start(async (ctx) => {
   return ctx.reply(`${ctx.from.first_name} добавь меня в чат`);
 });
 
-bot.hears('hi', (ctx) => {
+//! посчитаем коли-во сообщений
+
+bot.hears('/stat', async (ctx) => {
+  console.log(ctx.message.chat.id);
+  try {
+    const messages = await getChatMessages(ctx.message.chat.id);
+    console.log(messages);
+    return ctx.reply(`всего сообщений в базе ${messages.length}`)
+  } catch (error) {
+    console.log(error);
+  }
   return ctx.reply('Hey there');
 });
 
@@ -33,7 +44,8 @@ bot.hears('hi', (ctx) => {
 bot.on('message', (ctx) => {
   console.log(ctx.message);
   if (ctx.message.text) {
-    return ctx.reply('yes');
+    createMessage(ctx.message);
+    return ctx.reply('message added to db');
   }
 });
 
