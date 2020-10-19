@@ -1,0 +1,3 @@
+- [ ] create a function/controller to get all msg's for specific amount of time (currentDay, currentMonth)
+- [ ] create a function to count messages for each user
+- [ ] create a function to count most used words in messages
