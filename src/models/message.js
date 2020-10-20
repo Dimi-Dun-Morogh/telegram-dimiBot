@@ -8,6 +8,9 @@ const messageSchema = new mongoose.Schema({
   chat_id: {
     type: Number,
   },
+  user_id: {
+    type: Number,
+  },
   chat_title: {
     type: String,
   },
@@ -17,10 +20,9 @@ const messageSchema = new mongoose.Schema({
   date: {
     type: Number,
   },
-  // chat: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'chat',
-  // },
+  name: {
+    type: String,
+  },
 });
 
 mongoose.model('Message', messageSchema);

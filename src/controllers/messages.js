@@ -4,19 +4,20 @@ const { createItem } = require('../db/db.crud');
 const createMessage = async (messageObj) => {
   try {
     const {
-      from: { username: userName },
+      from: { username: userName, first_name, last_name, id: user_id },
       chat: { id: chat_id, title: chat_title },
       date,
       text,
     } = messageObj;
-    console.log({ userName, chat_id, chat_title, date, text });
+    console.log({ userName, user_id, chat_id, chat_title, date, text });
     const newMsg = await createItem(message, {
       userName,
       chat_id,
       chat_title,
+      user_id,
       date,
       text,
-      chat: '5f8ce6209083886a616e11e1',
+      name: `${first_name} ${last_name}`,
     });
     console.log('created new msg');
     return newMsg;
@@ -33,6 +34,7 @@ async function getChatMessages(id) {
     return Promise.reject(err);
   }
 }
+
 /**
  *
  * @param {number} id

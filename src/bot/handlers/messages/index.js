@@ -38,6 +38,7 @@ const allMessagesCount = async (context) => {
 };
 
 const writeMessageToDb = (context) => {
+  console.log(context.message);
   if (context.message.text && context.message.chat.type === 'group') {
     createMessage(context.message);
   }
@@ -62,6 +63,23 @@ const MessagesByTime = async (chatId, timeRange) => {
   }
 };
 
+const countMsgsForEachUser = (msgArray) => {
+  const countMsgs = msgArray.reduce((acc, { user_id }) => {
+    acc[user_id] = acc[user_id] + 1 || 1;
+    return acc;
+  }, {});
+  msgArray.forEach(({ userName, name, user_id }) => {
+    countMsgs[user_id] = {
+      userName,
+      name,
+      count: countMsgs[user_id].count || countMsgs[user_id],
+      user_id,
+    };
+    console.log(countMsgs, name, user_id);
+  });
+  return countMsgs;
+};
+
 const getStatsByTime = async (context, timeRange) => {
   try {
     const {
@@ -73,6 +91,8 @@ const getStatsByTime = async (context, timeRange) => {
       day: 'день',
     };
     const messages = await MessagesByTime(id, timeRange);
+    const userStat = countMsgsForEachUser(messages);
+    console.log('user Stat', userStat);
     context.reply(`сообщений за ${dictionary[timeRange]} - ${messages.length}`);
   } catch (error) {
     console.log(error);
