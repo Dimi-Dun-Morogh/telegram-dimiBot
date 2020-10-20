@@ -33,6 +33,21 @@ async function getChatMessages(id) {
     return Promise.reject(err);
   }
 }
+/**
+ *
+ * @param {number} id
+ * @param {number} timestamp
+ * 10 digit number ( regular Date/1000)
+ */
+const getChatMessagesByTime = async (id, timestamp) => {
+  try {
+    const messages = await message.find({ chat_id: id, date: { $gte: timestamp } }).exec();
+    return messages;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 /*
 {
   message_id: 91,
@@ -59,4 +74,5 @@ async function getChatMessages(id) {
 module.exports = {
   createMessage,
   getChatMessages,
+  getChatMessagesByTime,
 };

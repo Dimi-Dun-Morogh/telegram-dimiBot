@@ -1,5 +1,9 @@
 const { createChat, getChatByChatId } = require('../../../controllers/chats');
-const { createMessage, getChatMessages } = require('../../../controllers/messages');
+const {
+  createMessage,
+  getChatMessages,
+  getChatMessagesByTime,
+} = require('../../../controllers/messages');
 
 const handleStart = async (context) => {
   const chat = await context.getChat();
@@ -26,12 +30,11 @@ const allMessagesCount = async (context) => {
   console.log(context.message.chat.id);
   try {
     const messages = await getChatMessages(context.message.chat.id);
-    console.log(messages);
-    return context.reply(`всего сообщений в базе ${messages.length}`);
+    return context.reply(`сообщений за всё время ${messages.length}`);
   } catch (error) {
     console.log(error);
   }
-  return context.reply('Hey there');
+  return null;
 };
 
 const writeMessageToDb = (context) => {
@@ -41,8 +44,65 @@ const writeMessageToDb = (context) => {
   return null;
 };
 
+const MessagesByTime = async (chatId, timeRange) => {
+  try {
+    let todaysMidnight = new Date();
+    todaysMidnight.setHours(0, 0, 0, 0);
+    todaysMidnight =
+      timeRange === 'week'
+        ? todaysMidnight.setDate(todaysMidnight.getDate() - 7)
+        : timeRange === 'month'
+        ? todaysMidnight.setDate(todaysMidnight.getDate() - 30)
+        : todaysMidnight;
+    const messages = await getChatMessagesByTime(chatId, Number(todaysMidnight) / 1000);
+    console.log(messages);
+    return messages;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+const getStatsByTime = async (context, timeRange) => {
+  try {
+    const {
+      chat: { id },
+    } = context.message;
+    const dictionary = {
+      week: 'последние 7 дней',
+      month: 'последние 30 дней',
+      day: 'день',
+    };
+    const messages = await MessagesByTime(id, timeRange);
+    context.reply(`сообщений за ${dictionary[timeRange]} - ${messages.length}`);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// {
+//   message_id: 197,
+//   from: {
+//     id: 474382995,
+//     is_bot: false,
+//     first_name: 'Dimi',
+//     last_name: 'Dun-Morogh',
+//     username: 'dimibro',
+//     language_code: 'ru'
+//   },
+//   chat: {
+//     id: -359124392,
+//     title: 'testbota228',
+//     type: 'group',
+//     all_members_are_administrators: true
+//   },
+//   date: 1603152496,
+//   text: '/stat day',
+//   entities: [ { offset: 0, length: 5, type: 'bot_command' } ]
+// }
+
 module.exports = {
   handleStart,
   allMessagesCount,
   writeMessageToDb,
+  getStatsByTime,
 };
