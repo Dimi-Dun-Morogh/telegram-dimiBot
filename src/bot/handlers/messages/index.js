@@ -80,6 +80,17 @@ const countMsgsForEachUser = (msgArray) => {
   return countMsgs;
 };
 
+const countMostUsedWords = (msgArray) => {
+  return msgArray.reduce((acc, { text }) => {
+    // удалим \n .replaceAll('\n', ' ')
+    const words = text.replace(/\n/g, ' ').split(' ');
+    words.forEach((word) => {
+      acc[word] = acc[word] + 1 || 1;
+    });
+    return acc;
+  }, {});
+};
+
 const getStatsByTime = async (context, timeRange) => {
   try {
     const {
@@ -92,7 +103,9 @@ const getStatsByTime = async (context, timeRange) => {
     };
     const messages = await MessagesByTime(id, timeRange);
     const userStat = countMsgsForEachUser(messages);
+    const wordStat = countMostUsedWords(messages);
     console.log('user Stat', userStat);
+    console.log('messages stat', wordStat);
     context.reply(`сообщений за ${dictionary[timeRange]} - ${messages.length}`);
   } catch (error) {
     console.log(error);

@@ -1,4 +1,5 @@
 - [x] create a function/controller to get all msg's for specific amount of time (currentDay,last 7 days, last 30 days)(20.10.2020) ✅
 - [x] create a function to count messages for each user (20.10.2020) ✅
-- [ ] create a function to count most used words in messages
+- [x] create a function to count most used words in messages (20.10.2020) ✅
+- [ ] creat a function to render string with all the stats(message count, words count etc)
 - [ ] create a number to emoji string helpers/function
