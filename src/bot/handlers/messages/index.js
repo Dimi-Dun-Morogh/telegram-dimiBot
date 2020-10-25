@@ -7,7 +7,7 @@ const {
 
 const handleStart = async (context) => {
   const chat = await context.getChat();
-  console.log(chat);
+  //  console.log(chat);
   if (chat.type === 'group') {
     try {
       const chatExists = await getChatByChatId(chat.id);
@@ -27,7 +27,7 @@ const handleStart = async (context) => {
 };
 
 const allMessagesCount = async (context) => {
-  console.log(context.message.chat.id);
+  // console.log(context.message.chat.id);
   try {
     const messages = await getChatMessages(context.message.chat.id);
     return context.reply(`сообщений за всё время ${messages.length}`);
@@ -56,7 +56,7 @@ const MessagesByTime = async (chatId, timeRange) => {
         ? todaysMidnight.setDate(todaysMidnight.getDate() - 30)
         : todaysMidnight;
     const messages = await getChatMessagesByTime(chatId, Number(todaysMidnight) / 1000);
-    console.log(messages);
+    //  console.log(messages);
     return messages;
   } catch (error) {
     return Promise.reject(error);
@@ -75,7 +75,6 @@ const countMsgsForEachUser = (msgArray) => {
       count: countMsgs[user_id].count || countMsgs[user_id],
       user_id,
     };
-    console.log(countMsgs, name, user_id);
   });
   return countMsgs;
 };
@@ -91,6 +90,32 @@ const countMostUsedWords = (msgArray) => {
   }, {});
 };
 
+const renderStringWithWordStats = (wordStat) => {
+  let strResult = 'top 10 words: \n';
+  // filter wordStat to have only 10 indexes and sort by most used;
+  Object.entries(wordStat)
+    .sort((a, b) => b[1] - a[1])
+    .filter((word, index) => index < 10)
+    .forEach(([word, count], index) => (strResult += `${index + 1}) ${word} : ${count};\n`));
+  console.log(strResult);
+  return strResult;
+};
+
+const renderStringWithUserStats = (userStat) => {
+  let strResult = 'top 10 users by message count: \n';
+  // filter userStat to have only 10 indexes and sort by msg count
+  const arr = Object.entries(userStat)
+    .sort((a, b) => b[1] - a[1])
+    .filter((word, index) => index < 10)
+    .forEach(
+      ([, { userName, name, count }], index) =>
+        (strResult += `${index + 1}) ${name !== undefined ? name : userName} : ${count}\n`),
+    );
+  console.log(arr);
+  console.log(strResult);
+  return strResult;
+};
+
 const getStatsByTime = async (context, timeRange) => {
   try {
     const {
@@ -104,9 +129,12 @@ const getStatsByTime = async (context, timeRange) => {
     const messages = await MessagesByTime(id, timeRange);
     const userStat = countMsgsForEachUser(messages);
     const wordStat = countMostUsedWords(messages);
+    const wordStatRendered = renderStringWithWordStats(wordStat);
+    const userStatRendered = renderStringWithUserStats(userStat);
     console.log('user Stat', userStat);
     console.log('messages stat', wordStat);
-    context.reply(`сообщений за ${dictionary[timeRange]} - ${messages.length}`);
+    context.reply(`сообщений за ${dictionary[timeRange]} - ${messages.length}\n
+${userStatRendered}\n${wordStatRendered}`);
   } catch (error) {
     console.log(error);
   }

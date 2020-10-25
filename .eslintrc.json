@@ -16,7 +16,8 @@
     "no-underscore-dangle": "off",
     "no-shadow": "off",
     "global-require": "off",
-    "no-nested-ternary":"off",
-    "camelcase":"off"
+    "no-nested-ternary": "off",
+    "camelcase": "off",
+    "no-return-assign": "off"
   }
 }
