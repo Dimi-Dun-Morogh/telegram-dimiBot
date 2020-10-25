@@ -2,4 +2,4 @@
 - [x] create a function to count messages for each user (20.10.2020) ✅
 - [x] create a function to count most used words in messages (20.10.2020) ✅
 - [x] create a function to render string with all the stats(message count, words count etc) (25.10.2020) ✅
-- [ ] create a number to emoji string helpers/function
+- [x] create a number to emoji string helpers/function (25.10.2020) ✅

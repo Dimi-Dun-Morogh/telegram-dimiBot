@@ -4,6 +4,7 @@ const {
   getChatMessages,
   getChatMessagesByTime,
 } = require('../../../controllers/messages');
+const { textToEmoji } = require('../../../helpers/textConverters');
 
 const handleStart = async (context) => {
   const chat = await context.getChat();
@@ -56,7 +57,6 @@ const MessagesByTime = async (chatId, timeRange) => {
         ? todaysMidnight.setDate(todaysMidnight.getDate() - 30)
         : todaysMidnight;
     const messages = await getChatMessagesByTime(chatId, Number(todaysMidnight) / 1000);
-    //  console.log(messages);
     return messages;
   } catch (error) {
     return Promise.reject(error);
@@ -91,7 +91,7 @@ const countMostUsedWords = (msgArray) => {
 };
 
 const renderStringWithWordStats = (wordStat) => {
-  let strResult = 'top 10 words: \n';
+  let strResult = `${textToEmoji('lightning')} Топ ${textToEmoji(10)} слов: \n`;
   // filter wordStat to have only 10 indexes and sort by most used;
   Object.entries(wordStat)
     .sort((a, b) => b[1] - a[1])
@@ -102,17 +102,17 @@ const renderStringWithWordStats = (wordStat) => {
 };
 
 const renderStringWithUserStats = (userStat) => {
-  let strResult = 'top 10 users by message count: \n';
+  let strResult = `${textToEmoji('lightning')}Топ 10 зяблов${textToEmoji(
+    'lightning',
+  )} по кол-ву сообщений${textToEmoji('speech')} : \n`;
   // filter userStat to have only 10 indexes and sort by msg count
-  const arr = Object.entries(userStat)
+  Object.entries(userStat)
     .sort((a, b) => b[1] - a[1])
     .filter((word, index) => index < 10)
     .forEach(
       ([, { userName, name, count }], index) =>
         (strResult += `${index + 1}) ${name !== undefined ? name : userName} : ${count}\n`),
     );
-  console.log(arr);
-  console.log(strResult);
   return strResult;
 };
 
@@ -122,8 +122,8 @@ const getStatsByTime = async (context, timeRange) => {
       chat: { id },
     } = context.message;
     const dictionary = {
-      week: 'последние 7 дней',
-      month: 'последние 30 дней',
+      week: `последние ${textToEmoji(7)} дней`,
+      month: `последние ${textToEmoji(30)} дней`,
       day: 'день',
     };
     const messages = await MessagesByTime(id, timeRange);
@@ -131,35 +131,19 @@ const getStatsByTime = async (context, timeRange) => {
     const wordStat = countMostUsedWords(messages);
     const wordStatRendered = renderStringWithWordStats(wordStat);
     const userStatRendered = renderStringWithUserStats(userStat);
-    console.log('user Stat', userStat);
-    console.log('messages stat', wordStat);
-    context.reply(`сообщений за ${dictionary[timeRange]} - ${messages.length}\n
-${userStatRendered}\n${wordStatRendered}`);
+    context.reply(`${textToEmoji('saintsRow')}Cообщений за ${dictionary[timeRange]} - ${textToEmoji(
+      messages.length,
+    )}\n
+${userStatRendered}\n${
+      textToEmoji('small_triangle') +
+      textToEmoji('small_triangle') +
+      textToEmoji('small_triangle') +
+      textToEmoji('small_triangle')
+    }\n${wordStatRendered}`);
   } catch (error) {
     console.log(error);
   }
 };
-
-// {
-//   message_id: 197,
-//   from: {
-//     id: 474382995,
-//     is_bot: false,
-//     first_name: 'Dimi',
-//     last_name: 'Dun-Morogh',
-//     username: 'dimibro',
-//     language_code: 'ru'
-//   },
-//   chat: {
-//     id: -359124392,
-//     title: 'testbota228',
-//     type: 'group',
-//     all_members_are_administrators: true
-//   },
-//   date: 1603152496,
-//   text: '/stat day',
-//   entities: [ { offset: 0, length: 5, type: 'bot_command' } ]
-// }
 
 module.exports = {
   handleStart,
