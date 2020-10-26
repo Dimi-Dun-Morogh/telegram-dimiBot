@@ -39,7 +39,7 @@ const allMessagesCount = async (context) => {
 };
 
 const writeMessageToDb = (context) => {
-  console.log(context.message);
+  // console.log(context.message);
   if (
     (context.message.text !== undefined && context.message.chat.type === 'group') ||
     context.message.chat.type === 'supergroup'
@@ -101,7 +101,7 @@ const renderStringWithWordStats = (wordStat) => {
     .sort((a, b) => b[1] - a[1])
     .filter((word, index) => index < 10)
     .forEach(([word, count], index) => (strResult += `${index + 1}) ${word} : ${count};\n`));
-  console.log(strResult);
+  // console.log(strResult);
   return strResult;
 };
 
@@ -110,7 +110,6 @@ const renderStringWithUserStats = (userStat) => {
     'lightning',
   )} по кол-ву сообщений${textToEmoji('speech')} : \n`;
   // filter userStat to have only 10 indexes and sort by msg count
-  console.log(Object.entries(userStat));
   Object.entries(userStat)
     .sort((a, b) => b[1].count - a[1].count)
     .filter((word, index) => index < 10)

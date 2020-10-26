@@ -9,7 +9,8 @@ const createMessage = async (messageObj) => {
       date,
       text,
     } = messageObj;
-    console.log({ userName, user_id, chat_id, chat_title, date, text });
+    if (text === undefined || !text) return;
+    // console.log({ userName, user_id, chat_id, chat_title, date, text });
     const newMsg = await createItem(message, {
       userName,
       chat_id,
@@ -21,7 +22,7 @@ const createMessage = async (messageObj) => {
         last_name === undefined ? '' : ` ${last_name}`
       }`,
     });
-    console.log('created new msg');
+    console.log('created new msg with text', text);
     return newMsg;
   } catch (error) {
     return Promise.reject(error);
