@@ -48,6 +48,7 @@ const writeMessageToDb = (context) => {
 
 const MessagesByTime = async (chatId, timeRange) => {
   try {
+    if (timeRange === 'all time') return await getChatMessages(chatId);
     let todaysMidnight = new Date();
     todaysMidnight.setHours(0, 0, 0, 0);
     todaysMidnight =
@@ -125,6 +126,7 @@ const getStatsByTime = async (context, timeRange) => {
       week: `последние ${textToEmoji(7)} дней`,
       month: `последние ${textToEmoji(30)} дней`,
       day: 'день',
+      'all time': 'всё время',
     };
     const messages = await MessagesByTime(id, timeRange);
     const userStat = countMsgsForEachUser(messages);

@@ -19,6 +19,7 @@
     "no-nested-ternary": "off",
     "camelcase": "off",
     "no-return-assign": "off",
-    "no-plusplus":"off"
+    "no-plusplus":"off",
+    "no-unused-expressions":"off"
   }
 }

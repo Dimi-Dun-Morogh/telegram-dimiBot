@@ -1,11 +1,6 @@
 const { Telegraf } = require('telegraf');
 const { botApiKey } = require('../config/telegram');
-const {
-  handleStart,
-  allMessagesCount,
-  writeMessageToDb,
-  getStatsByTime,
-} = require('./handlers/messages/index');
+const { handleStart, writeMessageToDb, getStatsByTime } = require('./handlers/messages/index');
 
 const bot = new Telegraf(botApiKey);
 
@@ -13,7 +8,7 @@ const bot = new Telegraf(botApiKey);
 bot.start((ctx) => handleStart(ctx));
 
 //! посчитаем кол-во всех сообщений
-bot.hears('/stat', async (ctx) => allMessagesCount(ctx));
+bot.hears('/stat', async (ctx) => getStatsByTime(ctx, 'all time'));
 
 bot.hears('/stat day', async (ctx) => getStatsByTime(ctx, 'day'));
 
