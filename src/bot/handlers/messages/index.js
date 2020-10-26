@@ -8,8 +8,8 @@ const { textToEmoji } = require('../../../helpers/textConverters');
 
 const handleStart = async (context) => {
   const chat = await context.getChat();
-  //  console.log(chat);
-  if (chat.type === 'group') {
+  console.log(chat.type);
+  if (chat.type === 'group' || chat.type === 'supergroup') {
     try {
       const chatExists = await getChatByChatId(chat.id);
       if (!chatExists) {
@@ -40,7 +40,10 @@ const allMessagesCount = async (context) => {
 
 const writeMessageToDb = (context) => {
   console.log(context.message);
-  if (context.message.text && context.message.chat.type === 'group') {
+  if (
+    (context.message.text !== undefined && context.message.chat.type === 'group') ||
+    context.message.chat.type === 'supergroup'
+  ) {
     createMessage(context.message);
   }
   return null;
@@ -81,11 +84,11 @@ const countMsgsForEachUser = (msgArray) => {
 };
 
 const countMostUsedWords = (msgArray) => {
-  return msgArray.reduce((acc, { text }) => {
+  return msgArray.reduce((acc, { text = '' }) => {
     // удалим \n .replaceAll('\n', ' ')
     const words = text.replace(/\n/g, ' ').split(' ');
     words.forEach((word) => {
-      acc[word] = acc[word] + 1 || 1;
+      if (word.length > 3) acc[word] = acc[word] + 1 || 1;
     });
     return acc;
   }, {});
@@ -107,8 +110,9 @@ const renderStringWithUserStats = (userStat) => {
     'lightning',
   )} по кол-ву сообщений${textToEmoji('speech')} : \n`;
   // filter userStat to have only 10 indexes and sort by msg count
+  console.log(Object.entries(userStat));
   Object.entries(userStat)
-    .sort((a, b) => b[1] - a[1])
+    .sort((a, b) => b[1].count - a[1].count)
     .filter((word, index) => index < 10)
     .forEach(
       ([, { userName, name, count }], index) =>

@@ -17,7 +17,9 @@ const createMessage = async (messageObj) => {
       user_id,
       date,
       text,
-      name: `${first_name} ${last_name}`,
+      name: `${first_name === undefined ? userName : first_name}${
+        last_name === undefined ? '' : ` ${last_name}`
+      }`,
     });
     console.log('created new msg');
     return newMsg;
