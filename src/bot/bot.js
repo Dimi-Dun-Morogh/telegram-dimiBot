@@ -24,7 +24,6 @@ bot.on('left_chat_member', (ctx) => handleLeave(ctx));
 
 // cлушаем ивент "сообщение" здесь можно будет записывать все сообщения в ДБ.
 bot.on('message', (ctx) => {
-  //  console.log(ctx);
   writeMessageToDb(ctx);
 });
 
