@@ -5,6 +5,6 @@
 - [x] create a number to emoji string helpers/function (25.10.2020) ✅
 - [ ] implement a daily statistics post message ( setInterval maybe?)
 - [ ] implement a 'set chat rules logic (must have admin)'
-- [ ] implement a greeting new member logic
+- [x] implement a greeting new member logic (27.10.2020) ✅
 - [ ] refactor data-base, crud methods, message strings should be put in array of chat/user document
 - [ ]   implement a logic to parse jokes from some site and post them with bot command
