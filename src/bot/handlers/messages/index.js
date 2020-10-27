@@ -100,7 +100,7 @@ const renderStringWithWordStats = (wordStat) => {
   Object.entries(wordStat)
     .sort((a, b) => b[1] - a[1])
     .filter((word, index) => index < 10)
-    .forEach(([word, count], index) => (strResult += `${index + 1}) ${word} : ${count};\n`));
+    .forEach(([word, count]) => (strResult += `${textToEmoji('pin2')} ${word} : ${count}\n`));
   // console.log(strResult);
   return strResult;
 };
@@ -114,8 +114,10 @@ const renderStringWithUserStats = (userStat) => {
     .sort((a, b) => b[1].count - a[1].count)
     .filter((word, index) => index < 10)
     .forEach(
-      ([, { userName, name, count }], index) =>
-        (strResult += `${index + 1}) ${name !== undefined ? name : userName} : ${count}\n`),
+      ([, { userName, name, count }]) =>
+        (strResult += `${textToEmoji('pin')} ${name !== undefined ? name : userName} ${textToEmoji(
+          'boom',
+        )} ${count}\n`),
     );
   return strResult;
 };
@@ -136,15 +138,17 @@ const getStatsByTime = async (context, timeRange) => {
     const wordStat = countMostUsedWords(messages);
     const wordStatRendered = renderStringWithWordStats(wordStat);
     const userStatRendered = renderStringWithUserStats(userStat);
-    context.reply(`${textToEmoji('saintsRow')}Cообщений за ${dictionary[timeRange]} - ${textToEmoji(
-      messages.length,
-    )}\n
+    context.reply(
+      `${textToEmoji('saintsRow')}Cообщений за ${dictionary[timeRange]} - ${textToEmoji(
+        messages.length,
+      )}\n
 ${userStatRendered}\n${
-      textToEmoji('small_triangle') +
-      textToEmoji('small_triangle') +
-      textToEmoji('small_triangle') +
-      textToEmoji('small_triangle')
-    }\n${wordStatRendered}`);
+        textToEmoji('small_triangle') +
+        textToEmoji('small_triangle') +
+        textToEmoji('small_triangle') +
+        textToEmoji('small_triangle')
+      }\n\n${wordStatRendered}`,
+    );
   } catch (error) {
     console.log(error);
   }

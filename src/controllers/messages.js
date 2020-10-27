@@ -53,29 +53,6 @@ const getChatMessagesByTime = async (id, timestamp) => {
   }
 };
 
-/*
-{
-  message_id: 91,
-  from: {
-    id: 474382995,
-    is_bot: false,
-    first_name: 'Dimi',
-    last_name: 'Dun-Morogh',
-    username: 'dimibro',
-    language_code: 'ru'
-  },
-  chat: {
-    id: -359124392,
-    title: 'testbota228',
-    type: 'group',
-    all_members_are_administrators: true
-  },
-  date: 1603109025,
-  text: 'sasdasd'
-}
-
-*/
-
 module.exports = {
   createMessage,
   getChatMessages,

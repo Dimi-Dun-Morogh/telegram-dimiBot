@@ -15,6 +15,9 @@ const textToEmoji = (val) => {
     speech: '\ud83d\udcac',
     small_triangle: '\ud83d\udd39',
     lightning: '\u26a1\ufe0f',
+    pin: '\ud83d\udccc',
+    boom: '\ud83d\udca5',
+    pin2: '\ud83e\uddf7',
   };
   let res = '';
   val = String(val);
