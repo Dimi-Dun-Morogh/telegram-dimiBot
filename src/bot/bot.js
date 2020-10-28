@@ -1,7 +1,8 @@
-const { Telegraf } = require('telegraf');
+const { Telegraf, Context } = require('telegraf');
 const { handleStart, writeMessageToDb, getStatsByTime } = require('./handlers/messages/index');
 const { botApiKey } = require('../config/telegram');
 const { handleLeave, handleJoin } = require('./handlers/chat_events');
+const { setRules, getRules, handleHelp } = require('./handlers/chat_admin');
 
 const bot = new Telegraf(botApiKey);
 bot.command('greeter', (ctx) => ctx.scene.enter('greeter'));
@@ -10,13 +11,19 @@ bot.command('greeter', (ctx) => ctx.scene.enter('greeter'));
 bot.start((ctx) => handleStart(ctx));
 
 //! посчитаем кол-во всех сообщений
-bot.hears('/stat', async (ctx) => getStatsByTime(ctx, 'all time'));
+bot.command('/stat', (ctx) => getStatsByTime(ctx, 'all time'));
 
-bot.hears('/stat day', async (ctx) => getStatsByTime(ctx, 'day'));
+bot.command('/stat_day', (ctx) => getStatsByTime(ctx, 'day'));
 
-bot.hears('/stat week', async (ctx) => getStatsByTime(ctx, 'week'));
+bot.command('/stat_week', (ctx) => getStatsByTime(ctx, 'week'));
 
-bot.hears('/stat month', async (ctx) => getStatsByTime(ctx, 'month'));
+bot.command('/stat_month', (ctx) => getStatsByTime(ctx, 'month'));
+
+bot.command('/set_rules', (ctx) => setRules(ctx));
+
+bot.command('/rules', (ctx) => getRules(ctx));
+
+bot.command('/help', (ctx) => handleHelp(ctx));
 
 // greeting & leave events
 bot.on('new_chat_members', (ctx) => handleJoin(ctx));

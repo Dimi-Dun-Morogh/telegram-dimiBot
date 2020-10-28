@@ -8,3 +8,4 @@
 - [x] implement a greeting new member logic (27.10.2020) ✅
 - [ ] refactor data-base, crud methods, message strings should be put in array of chat/user document
 - [ ]   implement a logic to parse jokes from some site and post them with bot command
+- [x] implement get/set rules for chat (28.10.2020) ✅

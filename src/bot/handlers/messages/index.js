@@ -8,7 +8,7 @@ const { textToEmoji } = require('../../../helpers/textConverters');
 
 const handleStart = async (context) => {
   const chat = await context.getChat();
-  console.log(chat.type);
+  console.log(chat);
   if (chat.type === 'group' || chat.type === 'supergroup') {
     try {
       const chatExists = await getChatByChatId(chat.id);
@@ -85,8 +85,11 @@ const countMsgsForEachUser = (msgArray) => {
 
 const countMostUsedWords = (msgArray) => {
   return msgArray.reduce((acc, { text = '' }) => {
-    // удалим \n .replaceAll('\n', ' ')
-    const words = text.replace(/\n/g, ' ').split(' ');
+    // удалим \n .replaceAll('\n', ' ') и ,!.
+    const words = text
+      .replace(/\n/g, ' ')
+      .replace(/[.,?!]/g, '')
+      .split(' ');
     words.forEach((word) => {
       if (word.length > 3) acc[word] = acc[word] + 1 || 1;
     });

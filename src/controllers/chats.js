@@ -12,8 +12,18 @@ const createChat = async (chatObj) => {
 };
 const getChatByChatId = async (id) => {
   try {
-    const chatExists = await getItemByChatId(chat, id);
-    return Boolean(chatExists);
+    const chatById = await getItemByChatId(chat, id);
+    return chatById;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+const updateChat = async (id, data) => {
+  try {
+    await chat.updateOne({ chat_id: id }, data, { upsert: true });
+    const chatUpdated = await chat.findOne({ chat_id: id });
+    return chatUpdated;
   } catch (error) {
     return Promise.reject(error);
   }
@@ -21,4 +31,5 @@ const getChatByChatId = async (id) => {
 module.exports = {
   createChat,
   getChatByChatId,
+  updateChat,
 };

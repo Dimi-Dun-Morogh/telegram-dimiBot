@@ -14,6 +14,10 @@ const chatSchema = new mongoose.Schema({
       ref: 'Message',
     },
   ],
+  rules: {
+    type: String,
+    default: '',
+  },
 });
 
 mongoose.model('chat', chatSchema);

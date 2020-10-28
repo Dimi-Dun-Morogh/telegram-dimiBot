@@ -18,6 +18,7 @@ const textToEmoji = (val) => {
     pin: '\ud83d\udccc',
     boom: '\ud83d\udca5',
     pin2: '\ud83e\uddf7',
+    green_snowflake: '\u2733\ufe0f',
   };
   let res = '';
   val = String(val);
