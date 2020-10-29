@@ -1,8 +1,9 @@
-const { Telegraf, Context } = require('telegraf');
+const { Telegraf } = require('telegraf');
 const { handleStart, writeMessageToDb, getStatsByTime } = require('./handlers/messages/index');
 const { botApiKey } = require('../config/telegram');
 const { handleLeave, handleJoin } = require('./handlers/chat_events');
 const { setRules, getRules, handleHelp } = require('./handlers/chat_admin');
+const { parseJokes } = require('./handlers/chat_jokes');
 
 const bot = new Telegraf(botApiKey);
 bot.command('greeter', (ctx) => ctx.scene.enter('greeter'));
@@ -24,6 +25,8 @@ bot.command('/set_rules', (ctx) => setRules(ctx));
 bot.command('/rules', (ctx) => getRules(ctx));
 
 bot.command('/help', (ctx) => handleHelp(ctx));
+
+bot.command('/joke', (ctx) => parseJokes(ctx));
 
 // greeting & leave events
 bot.on('new_chat_members', (ctx) => handleJoin(ctx));
