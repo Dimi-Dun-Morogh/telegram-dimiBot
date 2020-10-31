@@ -24,5 +24,5 @@ list of bot's commands can be seen on screenshots below:
 - [ ] implement a daily statistics post message ( setInterval maybe?)
 - [x] implement a greeting new member logic (27.10.2020) ✅
 - [ ] refactor data-base, crud methods, message strings should be put in array of chat/user document
-- [x]   implement a logic to parse jokes from some site and post them with bot command (29.10.2020) ✅
+- [x] implement a logic to parse jokes from some site and post them with bot command (29.10.2020) ✅
 - [x] implement get/set rules for chat (28.10.2020) ✅

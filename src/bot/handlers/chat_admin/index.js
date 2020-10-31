@@ -9,7 +9,6 @@ const setRules = async (context) => {
     from: { id },
   } = context.message;
   console.log('chat id', chat.id);
-  if (chat.type === 'private') return null; //! middleware needed
   const admins = await context.getChatAdministrators();
   const isAdmin = Boolean(admins.find(({ user }) => user.id === id));
   const rulesString = text.slice(10);
@@ -25,7 +24,6 @@ const setRules = async (context) => {
 
 const getRules = async (context) => {
   const { chat } = context.message;
-  if (chat.type === 'private') return null;
   const remoteChat = await getChatByChatId(chat.id);
   const { rules } = remoteChat;
   console.log(rules);
