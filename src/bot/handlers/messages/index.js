@@ -40,11 +40,13 @@ const allMessagesCount = async (context) => {
 
 const writeMessageToDb = (context) => {
   // console.log(context.message);
+  const { text, chat, caption } = context.message;
   if (
-    (context.message.text !== undefined && context.message.chat.type === 'group') ||
-    context.message.chat.type === 'supergroup'
+    (text !== undefined || caption !== undefined) &&
+    (chat.type === 'group' || chat.type === 'supergroup')
   ) {
-    createMessage(context.message);
+    const msgString = typeof text === 'string' ? text : caption;
+    createMessage({ ...context.message, text: msgString });
   }
   return null;
 };

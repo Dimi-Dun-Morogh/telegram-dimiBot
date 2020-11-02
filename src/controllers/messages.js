@@ -10,7 +10,6 @@ const createMessage = async (messageObj) => {
       text,
     } = messageObj;
     if (text === undefined || !text) return;
-    // console.log({ userName, user_id, chat_id, chat_title, date, text });
     const newMsg = await createItem(message, {
       userName,
       chat_id,
