@@ -20,6 +20,7 @@ const handleJoin = async (context) => {
     }, проходи, присаживайся`,
   );
   const remoteChat = await getChatByChatId(context.message.chat.id);
+  if (!remoteChat) return null;
   const { rules } = remoteChat;
   if (rules.length) context.reply(rules);
 };

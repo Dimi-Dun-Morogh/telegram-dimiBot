@@ -38,11 +38,6 @@ bot.on('left_chat_member', (ctx) => handleLeave(ctx));
 
 // cлушаем ивент "сообщение" здесь можно будет записывать все сообщения в ДБ.
 bot.on('message', (ctx) => {
-  console.log(ctx.message);
-  // const { message } = ctx.update;
-  // bot.telegram.getFileLink(message.photo[1].file_id).then((url) => {
-  //   ctx.reply(url);
-  // });
   writeMessageToDb(ctx);
 });
 
