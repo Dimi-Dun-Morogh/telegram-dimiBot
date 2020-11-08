@@ -160,11 +160,16 @@ const getWordStats = async (context) => {
   const wordStat = countMostUsedWords(messages);
   const date = new Date(messages[0].date * 1000);
   const stats = wordStat[word];
+  let varietyStr = '';
+  Object.entries(wordStat)
+    .filter(([key]) => key.includes(word))
+    .forEach(([key, value]) => (varietyStr += `\n${key} : ${value} ${textToEmoji('lightning')}`));
+  console.log(stats);
   if (stats === undefined) return context.reply(`для ${word} еще нет статистики`);
   return context.reply(
-    `начиная с ${date.toLocaleDateString()} слово ${word} было написано ${stats} раз${textToEmoji(
-      'boom',
-    )}`,
+    `начиная с ${date.toLocaleDateString()} слово ${textToEmoji('pin')}"${word}"${textToEmoji(
+      'pin',
+    )} было написано ${stats} раз${textToEmoji('boom')}\n включая вариации:\n ${varietyStr}`,
   );
 };
 
