@@ -13,6 +13,10 @@ list of bot's commands can be seen on screenshots below:
 ![alt text](./img/joke.JPG)
 ##### greetings
 ![alt text](./img/greetings.JPG)
+##### /stat_me
+![alt text](./img/stat_me.JPG)
+##### /stat_word
+![alt text](./img/stat_word.JPG)
 
 ####log:
 

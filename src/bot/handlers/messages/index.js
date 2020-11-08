@@ -127,6 +127,41 @@ const renderStringWithUserStats = (userStat) => {
   return strResult;
 };
 
+const getMyStats = async (context) => {
+  try {
+    const { chat, from } = context.message;
+    const messages = await getChatMessages(chat.id).then((arr) =>
+      arr.filter((msg) => msg.user_id === from.id),
+    );
+    if (!messages) return context.reply('что-то с ботом или у вас нет сообщений');
+    const wordStat = countMostUsedWords(messages);
+    const wordStatRendered = renderStringWithWordStats(wordStat);
+    const dateFirstMsg = new Date(messages[0].date * 1000);
+    const finalString = `статистика для ${textToEmoji('saintsRow')}${
+      messages[messages.length - 1].name
+    }${textToEmoji(
+      'saintsRow',
+    )} начиная с ${dateFirstMsg.toLocaleDateString()}:\n сообщений ${textToEmoji(
+      messages.length,
+    )}\n\n${wordStatRendered}`;
+    return context.reply(finalString);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getWordStats = async (context) => {
+  const { chat, text } = context.message;
+  const [, word] = text.split(' ');
+  if (word === undefined) return context.reply('укажите слово через пробел после /stat_word ');
+  const messages = await getChatMessages(chat.id);
+  if (!messages) return null;
+  const wordStat = countMostUsedWords(messages);
+  const stats = wordStat[word];
+  if (stats === undefined) return context.reply(`для ${word} еще нет статистики`);
+  return context.reply(`Слово ${word} было написано ${stats} раз${textToEmoji('boom')}`);
+};
+
 const getStatsByTime = async (context, timeRange) => {
   try {
     const {
@@ -164,4 +199,6 @@ module.exports = {
   allMessagesCount,
   writeMessageToDb,
   getStatsByTime,
+  getMyStats,
+  getWordStats,
 };
