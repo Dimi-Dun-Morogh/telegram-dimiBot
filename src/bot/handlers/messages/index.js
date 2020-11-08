@@ -93,6 +93,7 @@ const countMostUsedWords = (msgArray) => {
       .replace(/[.,?!]/g, '')
       .split(' ');
     words.forEach((word) => {
+      word = word.toLowerCase();
       if (word.length > 3) acc[word] = acc[word] + 1 || 1;
     });
     return acc;
@@ -157,9 +158,14 @@ const getWordStats = async (context) => {
   const messages = await getChatMessages(chat.id);
   if (!messages) return null;
   const wordStat = countMostUsedWords(messages);
+  const date = new Date(messages[0].date * 1000);
   const stats = wordStat[word];
   if (stats === undefined) return context.reply(`для ${word} еще нет статистики`);
-  return context.reply(`Слово ${word} было написано ${stats} раз${textToEmoji('boom')}`);
+  return context.reply(
+    `начиная с ${date.toLocaleDateString()} слово ${word} было написано ${stats} раз${textToEmoji(
+      'boom',
+    )}`,
+  );
 };
 
 const getStatsByTime = async (context, timeRange) => {
