@@ -1,5 +1,8 @@
 const message = require('../models/message');
 const { createItem } = require('../db/db.crud');
+const logger = require('../helpers/loggers');
+
+const NAMESPACE = 'controllers/messages';
 
 const createMessage = async (messageObj) => {
   try {
@@ -21,7 +24,7 @@ const createMessage = async (messageObj) => {
         last_name === undefined ? '' : ` ${last_name}`
       }`,
     });
-    console.log('created new msg with text', text);
+    logger.info(NAMESPACE, `created new msg with text "${text}"`);
     return newMsg;
   } catch (error) {
     return Promise.reject(error);

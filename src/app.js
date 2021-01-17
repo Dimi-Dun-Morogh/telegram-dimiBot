@@ -4,8 +4,12 @@ const connectDb = require('./db/db-connect');
 const wakeUpDyno = require('./helpers/herokuAntiIdle');
 
 connectDb().then(() => console.log('connect to db success'));
-bot.launch().then(() => console.log('bot up and running'));
+bot
+  .launch()
+  .then(() => console.log('bot up and running'))
+  .catch((error) => Promise.reject(error));
 
+// bot.stop();
 // anti idle conspiracy
 const URL = 'https://dimi-tg.herokuapp.com/';
 const app = express();
