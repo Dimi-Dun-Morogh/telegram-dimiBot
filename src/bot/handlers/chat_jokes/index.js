@@ -20,7 +20,7 @@ async function parseJokes(context) {
       .replace(/<(?:.|\n)*?>/gm, '\n'); // remove all html tags;
     const joke = he.decode(allJokes);
     const date = $('.title').first().first().text();
-    return context.reply(
+    context.reply(
       `Анекдот для ${textToEmoji('boom')}${userStr}${textToEmoji('boom')}\n\n${joke}\n\n${date}`,
     );
   } catch (error) {
