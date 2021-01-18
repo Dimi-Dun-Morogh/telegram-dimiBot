@@ -10,11 +10,12 @@ const { botApiKey } = require('../config/telegram');
 const { handleLeave, handleJoin } = require('./handlers/chat_events');
 const { setRules, getRules, handleHelp } = require('./handlers/chat_admin');
 const { parseJokes } = require('./handlers/chat_jokes');
-const { isInGroupMiddleWare } = require('./middlewares');
+const { isInGroupMiddleWare, isChatDBCreated } = require('./middlewares');
 
 const bot = new Telegraf(botApiKey);
 // MiddleWare на чек диалога (!приват)
 bot.use(isInGroupMiddleWare());
+// bot.use(isChatDBCreated());
 
 bot.command('greeter', (ctx) => ctx.scene.enter('greeter'));
 

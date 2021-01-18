@@ -13,6 +13,9 @@ bot
 // anti idle conspiracy
 const URL = 'https://dimi-tg.herokuapp.com/';
 const app = express();
+
+wakeUpDyno(URL);
+
 app.get('/', (request, response) => {
   console.log(`${Date.now()} Ping Received`);
   response.sendStatus(200);
