@@ -23,13 +23,17 @@ const setRules = async (context) => {
 };
 
 const getRules = async (context) => {
-  const { chat } = context.message;
-  const remoteChat = await getChatByChatId(chat.id);
-  if (!remoteChat) return null;
-  const { rules } = remoteChat;
-  console.log(rules);
-  if (!rules.length) return context.reply('ленивый  админ еще не установил правила');
-  context.reply(rules);
+  try {
+    const { chat } = context.message;
+    const remoteChat = await getChatByChatId(chat.id);
+    if (!remoteChat) return null;
+    const { rules } = remoteChat;
+    console.log(rules);
+    if (!rules.length) return context.reply('ленивый  админ еще не установил правила');
+    context.reply(rules);
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 const handleHelp = (context) => {

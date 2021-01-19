@@ -8,7 +8,6 @@ const { textToEmoji } = require('../../../helpers/textConverters');
 
 const handleStart = async (context) => {
   const chat = await context.getChat();
-  console.log(chat);
   if (chat.type === 'group' || chat.type === 'supergroup') {
     try {
       const chatExists = await getChatByChatId(chat.id);

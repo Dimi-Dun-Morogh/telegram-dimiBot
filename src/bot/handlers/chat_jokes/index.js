@@ -24,8 +24,7 @@ async function parseJokes(context) {
       `Анекдот для ${textToEmoji('boom')}${userStr}${textToEmoji('boom')}\n\n${joke}\n\n${date}`,
     );
   } catch (error) {
-    console.log(error.message, 'wwwwwwwwwwwwwwwwwww');
-    return Promise.reject(error);
+    console.log(error.message, 'err joke');
   }
 }
 

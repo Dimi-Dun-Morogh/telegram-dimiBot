@@ -1,5 +1,5 @@
 const chat = require('../models/chat');
-const { createItem, getItemByChatId } = require('../db/db.crud');
+const { createItem, getItemByChatId, getAllItems } = require('../db/db.crud');
 
 const createChat = async (chatObj) => {
   try {
@@ -19,6 +19,15 @@ const getChatByChatId = async (id) => {
   }
 };
 
+const getAllChats = async () => {
+  try {
+    const chats = await getAllItems(chat);
+    return chats;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 const updateChat = async (id, data) => {
   try {
     await chat.updateOne({ chat_id: id }, data, { upsert: true });
@@ -32,4 +41,5 @@ module.exports = {
   createChat,
   getChatByChatId,
   updateChat,
+  getAllChats,
 };

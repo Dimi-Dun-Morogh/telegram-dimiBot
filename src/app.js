@@ -2,6 +2,7 @@ const express = require('express');
 const bot = require('./bot/bot');
 const connectDb = require('./db/db-connect');
 const wakeUpDyno = require('./helpers/herokuAntiIdle');
+const { cronSayRandom } = require('./helpers/cronTasks');
 
 connectDb().then(() => console.log('connect to db success'));
 bot
@@ -23,3 +24,5 @@ app.get('/', (request, response) => {
 app.listen(process.env.PORT, () => {
   wakeUpDyno(URL);
 });
+
+cronSayRandom.start();
