@@ -46,6 +46,7 @@ ${textToEmoji(
   'green_snowflake',
 )} /set_rules - установить правила чата( /set_rules любой текст) доступно только админам\n
 ${textToEmoji('green_snowflake')} /joke - рассказать анекдот\n
+${textToEmoji('green_snowflake')} /anime - рандомное аниме\n
 ${textToEmoji('green_snowflake')} /rules - показать правила\n`;
   context.reply(helpString);
 };

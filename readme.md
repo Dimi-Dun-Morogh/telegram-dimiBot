@@ -11,6 +11,9 @@ list of bot's commands can be seen on screenshots below:
 ![alt text](./img/rules.JPG)
 ##### /joke
 ![alt text](./img/joke.JPG)
+
+##### /anime
+![alt text](./img/anime.JPG)
 ##### greetings
 ![alt text](./img/greetings.JPG)
 ##### /stat_me
