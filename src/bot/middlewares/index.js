@@ -4,7 +4,7 @@ const isInGroupMiddleWare = () => async (ctx, next) => {
   try {
     if (!ctx || !ctx.message || !ctx.message.text) return null;
     const { chat, text } = ctx.message;
-    const allowedCommands = ['/help', '/joke', '/start'];
+    const allowedCommands = ['/help', '/joke', '/start', '/anime'];
     const chatCommands = [
       '/stat',
       '/stat_day',

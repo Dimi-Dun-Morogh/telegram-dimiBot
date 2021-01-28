@@ -11,7 +11,10 @@ const { handleLeave, handleJoin } = require('./handlers/chat_events');
 const { setRules, getRules, handleHelp } = require('./handlers/chat_admin');
 const { parseJokes } = require('./handlers/chat_jokes');
 const { isInGroupMiddleWare } = require('./middlewares');
+const handleAnime = require('./handlers/getAnime');
+const logger = require('../helpers/loggers');
 
+const NAMESPACE = 'bot';
 const bot = new Telegraf(botApiKey);
 
 // greeting & leave events
@@ -47,6 +50,11 @@ bot.command('/joke', (ctx) => parseJokes(ctx));
 bot.command('/stat_me', (ctx) => getMyStats(ctx));
 
 bot.command('/stat_word', (ctx) => getWordStats(ctx));
+
+bot.command('/anime', (ctx) => {
+  logger.info(NAMESPACE, `/anime in chat:${ctx.chat.id}`);
+  handleAnime(ctx);
+});
 
 // cлушаем ивент "сообщение" здесь можно будет записывать все сообщения в ДБ.
 bot.on('message', (ctx) => {
