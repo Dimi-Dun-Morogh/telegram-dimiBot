@@ -1,7 +1,10 @@
+import { getAllChats } from '../../controllers/chats';
+
+import logger from '../loggers';
+
 const cron = require('node-cron');
 const bot = require('../../bot/bot.js');
-const { getAllChats } = require('../../controllers/chats.js');
-const logger = require('../loggers.js');
+
 const { validChats } = require('../utils.js');
 const { phrases } = require('../textConverters');
 
@@ -22,17 +25,10 @@ const cronSayRandom = cron
     const randomHour = Math.floor(Math.random() * 4) * (1000 * 60 * 60);
     const randomMinute = Math.floor(Math.random() * 59) * (1000 * 60);
     const time = randomSec + randomMinute + randomHour;
-    logger.info(
-      NAMESPACE,
-      `time for random is ${time / (1000 * 60 * 60)} hrs; word - "${phrases[randomWord]}" chat - ${
-        validIds[randomChat]
-      }`,
-    );
+    logger.info(NAMESPACE, `time for random is ${time / (1000 * 60 * 60)} hrs; word - "${phrases[randomWord]}" chat - ${validIds[randomChat]}`);
 
     setTimeout(() => {
-      bot.telegram
-        .sendMessage(validIds[randomChat], phrases[randomWord])
-        .catch((err) => logger.info(NAMESPACE, `error sending random msg`, err.message));
+      bot.telegram.sendMessage(validIds[randomChat], phrases[randomWord]).catch((err) => logger.info(NAMESPACE, 'error sending random msg', err.message));
     }, time);
   })
   .stop();

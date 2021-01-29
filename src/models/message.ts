@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import { ImessageModel } from '../interfaces/chats&messages';
 
-// const { Schema } = mongoose;
 const messageSchema = new mongoose.Schema({
   userName: {
     type: String,
@@ -25,6 +25,4 @@ const messageSchema = new mongoose.Schema({
   },
 });
 
-mongoose.model('Message', messageSchema);
-
-module.exports = mongoose.model('Message');
+export default mongoose.model<ImessageModel>('Message', messageSchema);

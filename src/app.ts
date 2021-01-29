@@ -1,14 +1,18 @@
+import { Request, Response } from 'express';
+import logger from './helpers/loggers';
+
 const express = require('express');
 const bot = require('./bot/bot');
 const connectDb = require('./db/db-connect');
 const wakeUpDyno = require('./helpers/herokuAntiIdle');
 const { cronSayRandom } = require('./helpers/cronTasks');
 
-connectDb().then(() => console.log('connect to db success'));
+const NAMESPACE = 'app.ts';
+connectDb().then(() => logger.info(NAMESPACE, 'connect to db success'));
 bot
   .launch()
-  .then(() => console.log('bot up and running'))
-  .catch((error) => Promise.reject(error));
+  .then(() => logger.info(NAMESPACE, 'bot up and running'))
+  .catch((error: Error) => console.error(error));
 
 // bot.stop();
 // anti idle conspiracy
@@ -17,8 +21,8 @@ const app = express();
 
 wakeUpDyno(URL);
 
-app.get('/', (request, response) => {
-  console.log(`${Date.now()} Ping Received`);
+app.get('/', (request: Request, response: Response) => {
+  logger.info(NAMESPACE, `${Date.now()} Ping Received`);
   response.sendStatus(200);
 });
 app.listen(process.env.PORT, () => {
@@ -26,5 +30,3 @@ app.listen(process.env.PORT, () => {
 });
 
 cronSayRandom.start();
-
-

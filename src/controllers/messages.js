@@ -1,13 +1,16 @@
-const message = require('../models/message');
+import message from '../models/message';
+import logger from '../helpers/loggers';
+
 const { createItem } = require('../db/db.crud');
-const logger = require('../helpers/loggers');
 
 const NAMESPACE = 'controllers/messages';
 
 const createMessage = async (messageObj) => {
   try {
     const {
-      from: { username: userName, first_name, last_name, id: user_id },
+      from: {
+        username: userName, first_name, last_name, id: user_id,
+      },
       chat: { id: chat_id, title: chat_title },
       date,
       text,
@@ -20,9 +23,7 @@ const createMessage = async (messageObj) => {
       user_id,
       date,
       text,
-      name: `${first_name === undefined ? userName : first_name}${
-        last_name === undefined ? '' : ` ${last_name}`
-      }`,
+      name: `${first_name === undefined ? userName : first_name}${last_name === undefined ? '' : ` ${last_name}`}`,
     });
     logger.info(NAMESPACE, `created new msg with text "${text}"`);
     return newMsg;

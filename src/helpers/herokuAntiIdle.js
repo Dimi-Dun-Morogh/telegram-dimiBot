@@ -1,5 +1,6 @@
+import logger from './loggers';
+
 const fetch = require('node-fetch');
-const logger = require('./loggers');
 
 const NAMESPACE = 'antiIdle.js';
 

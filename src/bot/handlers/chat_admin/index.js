@@ -39,12 +39,8 @@ const getRules = async (context) => {
 const handleHelp = (context) => {
   const helpString = `${textToEmoji('lightning')}Список комманд${textToEmoji('lightning')}\n
 ${textToEmoji('green_snowflake')} /stat - вернет статистику по чату за всё время\n
-${textToEmoji(
-  'green_snowflake',
-)} /stat_day , /stat_week , /stat_month - тоже самое но за день/7дней/30дней\n
-${textToEmoji(
-  'green_snowflake',
-)} /set_rules - установить правила чата( /set_rules любой текст) доступно только админам\n
+${textToEmoji('green_snowflake')} /stat_day , /stat_week , /stat_month - тоже самое но за день/7дней/30дней\n
+${textToEmoji('green_snowflake')} /set_rules - установить правила чата( /set_rules любой текст) доступно только админам\n
 ${textToEmoji('green_snowflake')} /joke - рассказать анекдот\n
 ${textToEmoji('green_snowflake')} /anime - рандомное аниме\n
 ${textToEmoji('green_snowflake')} /rules - показать правила\n`;

@@ -1,4 +1,4 @@
-const logger = require('./loggers');
+import logger from './loggers';
 
 const NAMESPACE = 'utils.js';
 
@@ -17,14 +17,10 @@ async function syncTimeout(time) {
  * will go through array of IDs and return only ones that bot has access to
  */
 const validChats = async (chatIds, bot) => {
-  const promises = chatIds.map((chatId) => {
-    return bot.telegram
-      .getChat(chatId)
-      .then((res) => res.id)
-      .catch((error) =>
-        logger.info(NAMESPACE, `seems like chat is not valid id: ${chatId}`, error.message),
-      );
-  });
+  const promises = chatIds.map((chatId) => bot.telegram
+    .getChat(chatId)
+    .then((res) => res.id)
+    .catch((error) => logger.info(NAMESPACE, `seems like chat is not valid id: ${chatId}`, error.message)));
   const res = await Promise.all(promises);
   return res.filter((item) => item !== undefined);
 };
