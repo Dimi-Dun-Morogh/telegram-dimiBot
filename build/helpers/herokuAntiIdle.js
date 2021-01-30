@@ -19,10 +19,12 @@ const wakeUpDyno = (url, interval = 25, callback) => {
         }
         finally {
             try {
+                if (!callback)
+                    return null;
                 callback();
             }
             catch (e) {
-                callback ? console.log('Callback failed: ', e.message) : null;
+                console.log('Callback failed: ', e.message);
             }
             finally {
                 return wakeUpDyno(url, interval, callback);
@@ -30,4 +32,4 @@ const wakeUpDyno = (url, interval = 25, callback) => {
         }
     }, milliseconds);
 };
-module.exports = wakeUpDyno;
+exports.default = wakeUpDyno;

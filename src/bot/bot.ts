@@ -1,18 +1,22 @@
+import { Telegraf } from 'telegraf';
 import logger from '../helpers/loggers';
-
-const { Telegraf } = require('telegraf');
-const {
+import {
   handleStart, writeMessageToDb, getStatsByTime, getMyStats, getWordStats,
-} = require('./handlers/messages/index');
-const { botApiKey } = require('../config/telegram');
-const { handleLeave, handleJoin } = require('./handlers/chat_events');
-const { setRules, getRules, handleHelp } = require('./handlers/chat_admin');
-const { parseJokes } = require('./handlers/chat_jokes');
-const { isInGroupMiddleWare } = require('./middlewares');
-const handleAnime = require('./handlers/getAnime');
+} from './handlers/messages/index';
+
+import config from '../config/telegram';
+
+import { handleLeave, handleJoin } from './handlers/chat_events';
+import { parseJokes } from './handlers/chat_jokes';
+
+import { isInGroupMiddleWare } from './middlewares';
+
+import { handleAnime } from './handlers/getAnime';
+
+import { setRules, getRules, handleHelp } from './handlers/chat_admin';
 
 const NAMESPACE = 'bot';
-const bot = new Telegraf(botApiKey);
+const bot = new Telegraf(config.botApiKey!);
 
 // greeting & leave events
 bot.on('new_chat_members', (ctx) => handleJoin(ctx));
@@ -22,7 +26,7 @@ bot.on('left_chat_member', (ctx) => handleLeave(ctx));
 bot.use(isInGroupMiddleWare());
 // bot.use(isChatDBCreated());
 
-bot.command('greeter', (ctx) => ctx.scene.enter('greeter'));
+// bot.command('greeter', (ctx) => ctx.scene.enter('greeter'));
 
 //  /start здесь cоздаем новый чат в ДБ либо говорим что он создан/добавьте бота в чат
 bot.start((ctx) => handleStart(ctx));
@@ -49,7 +53,7 @@ bot.command('/stat_me', (ctx) => getMyStats(ctx));
 bot.command('/stat_word', (ctx) => getWordStats(ctx));
 
 bot.command('/anime', (ctx) => {
-  logger.info(NAMESPACE, `/anime in chat:${ctx.chat.id}`);
+  logger.info(NAMESPACE, `/anime in chat:${ctx.chat!.id!}`);
   handleAnime(ctx);
 });
 
@@ -58,4 +62,4 @@ bot.on('message', (ctx) => {
   writeMessageToDb(ctx);
 });
 
-module.exports = bot;
+export default bot;

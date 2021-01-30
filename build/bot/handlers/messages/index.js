@@ -8,33 +8,38 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const { createChat, getChatByChatId } = require('../../../controllers/chats');
-const { createMessage, getChatMessages, getChatMessagesByTime } = require('../../../controllers/messages');
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getWordStats = exports.getMyStats = exports.getStatsByTime = exports.writeMessageToDb = exports.allMessagesCount = exports.handleStart = void 0;
+const chats_1 = require("../../../controllers/chats");
+const messages_1 = require("../../../controllers/messages");
 const { textToEmoji } = require('../../../helpers/textConverters');
 const handleStart = (context) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b, _c, _d;
     const chat = yield context.getChat();
     if (chat.type === 'group' || chat.type === 'supergroup') {
         try {
-            const chatExists = yield getChatByChatId(chat.id);
+            const chatExists = yield chats_1.getChatByChatId(chat.id);
             if (!chatExists) {
-                yield createChat({
+                yield chats_1.createChat({
                     name: chat.title,
                     chat_id: chat.id,
                 });
-                return context.reply(`${context.from.first_name} я создал бд для ${chat.title}`);
+                return context.reply(`${(_a = context.from) === null || _a === void 0 ? void 0 : _a.first_name} я создал бд для ${chat.title}`);
             }
-            return context.reply(`${context.from.first_name} база данных для ${chat.title} уже была создана`);
+            return context.reply(`${(_b = context.from) === null || _b === void 0 ? void 0 : _b.first_name} база данных для ${chat.title} уже была создана`);
         }
         catch (error) {
             console.log(error);
-            return context.reply(`${context.from.first_name} ошибка в создании бд для ${chat.title}`);
+            return context.reply(`${(_c = context.from) === null || _c === void 0 ? void 0 : _c.first_name} ошибка в создании бд для ${chat.title}`);
         }
     }
-    return context.reply(`${context.from.first_name} добавь меня в чат`);
+    return context.reply(`${(_d = context.from) === null || _d === void 0 ? void 0 : _d.first_name} добавь меня в чат`);
 });
+exports.handleStart = handleStart;
 const allMessagesCount = (context) => __awaiter(void 0, void 0, void 0, function* () {
+    var _e;
     try {
-        const messages = yield getChatMessages(context.message.chat.id);
+        const messages = yield messages_1.getChatMessages((_e = context.message) === null || _e === void 0 ? void 0 : _e.chat.id);
         return context.reply(`сообщений за всё время ${messages.length}`);
     }
     catch (error) {
@@ -42,22 +47,33 @@ const allMessagesCount = (context) => __awaiter(void 0, void 0, void 0, function
     }
     return null;
 });
+exports.allMessagesCount = allMessagesCount;
 const writeMessageToDb = (context) => {
-    const { text, chat, caption } = context.message;
-    if ((text !== undefined || caption !== undefined) && (chat.type === 'group' || chat.type === 'supergroup')) {
+    const { text, chat, caption, from, date } = context.message;
+    if ((text || caption) && (chat.type === 'group' || chat.type === 'supergroup')) {
         const msgString = typeof text === 'string' ? text : caption;
-        createMessage(Object.assign(Object.assign({}, context.message), { text: msgString }));
+        const newMsgObj = {
+            userName: from === null || from === void 0 ? void 0 : from.username,
+            chat_id: chat.id,
+            chat_title: chat.title,
+            user_id: from === null || from === void 0 ? void 0 : from.id,
+            date,
+            text: msgString,
+            name: `${!(from === null || from === void 0 ? void 0 : from.first_name) ? from === null || from === void 0 ? void 0 : from.username : from === null || from === void 0 ? void 0 : from.first_name}${(from === null || from === void 0 ? void 0 : from.last_name) === undefined ? '' : ` ${from === null || from === void 0 ? void 0 : from.last_name}`}`,
+        };
+        messages_1.createMessage(newMsgObj);
     }
     return null;
 };
+exports.writeMessageToDb = writeMessageToDb;
 const MessagesByTime = (chatId, timeRange) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (timeRange === 'all time')
-            return yield getChatMessages(chatId);
+            return yield messages_1.getChatMessages(chatId);
         let todaysMidnight = new Date();
         todaysMidnight.setHours(0, 0, 0, 0);
         todaysMidnight = timeRange === 'week' ? todaysMidnight.setDate(todaysMidnight.getDate() - 7) : timeRange === 'month' ? todaysMidnight.setDate(todaysMidnight.getDate() - 30) : todaysMidnight;
-        const messages = yield getChatMessagesByTime(chatId, Number(todaysMidnight) / 1000);
+        const messages = yield messages_1.getChatMessagesByTime(chatId, Number(todaysMidnight) / 1000);
         return messages;
     }
     catch (error) {
@@ -85,9 +101,9 @@ const countMostUsedWords = (msgArray) => msgArray.reduce((acc, { text = '' }) =>
         .replace(/[.,?!]/g, '')
         .split(' ');
     words.forEach((word) => {
-        word = word.toLowerCase();
+        const wordLc = word.toLowerCase();
         if (word.length > 3)
-            acc[word] = acc[word] + 1 || 1;
+            acc[wordLc] = acc[wordLc] + 1 || 1;
     });
     return acc;
 }, {});
@@ -110,7 +126,7 @@ const renderStringWithUserStats = (userStat) => {
 const getMyStats = (context) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { chat, from } = context.message;
-        const messages = yield getChatMessages(chat.id).then((arr) => arr.filter((msg) => msg.user_id === from.id));
+        const messages = yield messages_1.getChatMessages(chat.id).then((arr) => arr.filter((msg) => msg.user_id === (from === null || from === void 0 ? void 0 : from.id)));
         if (!messages)
             return context.reply('что-то с ботом или у вас нет сообщений');
         const wordStat = countMostUsedWords(messages);
@@ -123,12 +139,13 @@ const getMyStats = (context) => __awaiter(void 0, void 0, void 0, function* () {
         console.log(error);
     }
 });
+exports.getMyStats = getMyStats;
 const getWordStats = (context) => __awaiter(void 0, void 0, void 0, function* () {
     const { chat, text } = context.message;
     const [, word] = text.split(' ');
     if (word === undefined)
         return context.reply('укажите слово через пробел после /stat_word ');
-    const messages = yield getChatMessages(chat.id);
+    const messages = yield messages_1.getChatMessages(chat.id);
     if (!messages)
         return null;
     const wordStat = countMostUsedWords(messages);
@@ -143,6 +160,7 @@ const getWordStats = (context) => __awaiter(void 0, void 0, void 0, function* ()
         return context.reply(`для ${word} еще нет статистики`);
     return context.reply(`начиная с ${date.toLocaleDateString()} слово ${textToEmoji('pin')}"${word}"${textToEmoji('pin')} было написано ${stats} раз${textToEmoji('boom')}\n включая вариации:\n ${varietyStr}`);
 });
+exports.getWordStats = getWordStats;
 const getStatsByTime = (context, timeRange) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { chat: { id }, } = context.message;
@@ -164,11 +182,4 @@ ${userStatRendered}\n${textToEmoji('small_triangle') + textToEmoji('small_triang
         console.log(error);
     }
 });
-module.exports = {
-    handleStart,
-    allMessagesCount,
-    writeMessageToDb,
-    getStatsByTime,
-    getMyStats,
-    getWordStats,
-};
+exports.getStatsByTime = getStatsByTime;

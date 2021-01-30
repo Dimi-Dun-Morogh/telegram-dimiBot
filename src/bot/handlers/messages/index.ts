@@ -1,32 +1,35 @@
-const { createChat, getChatByChatId } = require('../../../controllers/chats');
-const { createMessage, getChatMessages, getChatMessagesByTime } = require('../../../controllers/messages');
+import { TelegrafContext } from 'telegraf/typings/context';
+import { createChat, getChatByChatId } from '../../../controllers/chats';
+import { InewMessage, IusersStat, IwordStat } from '../../../interfaces/chats&messages';
+
+import { createMessage, getChatMessages, getChatMessagesByTime } from '../../../controllers/messages';
+
 const { textToEmoji } = require('../../../helpers/textConverters');
 
-const handleStart = async (context) => {
+const handleStart = async (context: TelegrafContext) => {
   const chat = await context.getChat();
   if (chat.type === 'group' || chat.type === 'supergroup') {
     try {
       const chatExists = await getChatByChatId(chat.id);
       if (!chatExists) {
         await createChat({
-          name: chat.title,
+          name: chat.title!,
           chat_id: chat.id,
         });
-        return context.reply(`${context.from.first_name} я создал бд для ${chat.title}`);
+        return context.reply(`${context.from?.first_name} я создал бд для ${chat.title}`);
       }
-      return context.reply(`${context.from.first_name} база данных для ${chat.title} уже была создана`);
+      return context.reply(`${context.from?.first_name} база данных для ${chat.title} уже была создана`);
     } catch (error) {
       console.log(error);
-      return context.reply(`${context.from.first_name} ошибка в создании бд для ${chat.title}`);
+      return context.reply(`${context.from?.first_name} ошибка в создании бд для ${chat.title}`);
     }
   }
-  return context.reply(`${context.from.first_name} добавь меня в чат`);
+  return context.reply(`${context.from?.first_name} добавь меня в чат`);
 };
 
-const allMessagesCount = async (context) => {
-  // console.log(context.message.chat.id);
+const allMessagesCount = async (context: TelegrafContext) => {
   try {
-    const messages = await getChatMessages(context.message.chat.id);
+    const messages = await getChatMessages(context.message?.chat.id!);
     return context.reply(`сообщений за всё время ${messages.length}`);
   } catch (error) {
     console.log(error);
@@ -34,22 +37,36 @@ const allMessagesCount = async (context) => {
   return null;
 };
 
-const writeMessageToDb = (context) => {
-  // console.log(context.message);
-  const { text, chat, caption } = context.message;
-  if ((text !== undefined || caption !== undefined) && (chat.type === 'group' || chat.type === 'supergroup')) {
+const writeMessageToDb = (context: TelegrafContext) => {
+  const {
+    text, chat, caption, from, date,
+  } = context.message!;
+  if ((text || caption) && (chat.type === 'group' || chat.type === 'supergroup')) {
     const msgString = typeof text === 'string' ? text : caption;
-    createMessage({ ...context.message, text: msgString });
+
+    const newMsgObj = {
+      userName: from?.username!,
+      chat_id: chat.id,
+      chat_title: chat.title!,
+      user_id: from?.id!,
+      date,
+      text: msgString!,
+      name: `${!from?.first_name ? from?.username : from?.first_name}${from?.last_name === undefined ? '' : ` ${from?.last_name}`}`,
+    };
+
+    createMessage(newMsgObj);
   }
   return null;
 };
 
-const MessagesByTime = async (chatId, timeRange) => {
+const MessagesByTime = async (chatId: number, timeRange: string) => {
   try {
     if (timeRange === 'all time') return await getChatMessages(chatId);
-    let todaysMidnight = new Date();
+
+    let todaysMidnight: Date | number = new Date();
     todaysMidnight.setHours(0, 0, 0, 0);
     todaysMidnight = timeRange === 'week' ? todaysMidnight.setDate(todaysMidnight.getDate() - 7) : timeRange === 'month' ? todaysMidnight.setDate(todaysMidnight.getDate() - 30) : todaysMidnight;
+
     const messages = await getChatMessagesByTime(chatId, Number(todaysMidnight) / 1000);
     return messages;
   } catch (error) {
@@ -57,8 +74,8 @@ const MessagesByTime = async (chatId, timeRange) => {
   }
 };
 
-const countMsgsForEachUser = (msgArray) => {
-  const countMsgs = msgArray.reduce((acc, { user_id }) => {
+const countMsgsForEachUser = (msgArray: Array<InewMessage>) => {
+  const countMsgs = msgArray.reduce((acc: any, { user_id }) => {
     acc[user_id] = acc[user_id] + 1 || 1;
     return acc;
   }, {});
@@ -73,31 +90,30 @@ const countMsgsForEachUser = (msgArray) => {
   return countMsgs;
 };
 
-const countMostUsedWords = (msgArray) => msgArray.reduce((acc, { text = '' }) => {
+const countMostUsedWords = (msgArray: Array<InewMessage>): IwordStat => msgArray.reduce((acc: any, { text = '' }) => {
   // удалим \n .replaceAll('\n', ' ') и ,!.
   const words = text
     .replace(/\n/g, ' ')
     .replace(/[.,?!]/g, '')
     .split(' ');
   words.forEach((word) => {
-    word = word.toLowerCase();
-    if (word.length > 3) acc[word] = acc[word] + 1 || 1;
+    const wordLc = word.toLowerCase();
+    if (word.length > 3) acc[wordLc] = acc[wordLc] + 1 || 1;
   });
   return acc;
 }, {});
 
-const renderStringWithWordStats = (wordStat) => {
+const renderStringWithWordStats = (wordStat: IwordStat) => {
   let strResult = `${textToEmoji('lightning')} Топ ${textToEmoji(10)} слов: \n`;
   // filter wordStat to have only 10 indexes and sort by most used;
   Object.entries(wordStat)
     .sort((a, b) => b[1] - a[1])
     .filter((word, index) => index < 10)
     .forEach(([word, count]) => (strResult += `${textToEmoji('pin2')} ${word} : ${count}\n`));
-  // console.log(strResult);
   return strResult;
 };
 
-const renderStringWithUserStats = (userStat) => {
+const renderStringWithUserStats = (userStat: IusersStat) => {
   let strResult = `${textToEmoji('lightning')}Топ 10 зяблов${textToEmoji('lightning')} по кол-ву сообщений${textToEmoji('speech')} : \n`;
   // filter userStat to have only 10 indexes and sort by msg count
   Object.entries(userStat)
@@ -107,11 +123,15 @@ const renderStringWithUserStats = (userStat) => {
   return strResult;
 };
 
-const getMyStats = async (context) => {
+const getMyStats = async (context: TelegrafContext) => {
   try {
-    const { chat, from } = context.message;
-    const messages = await getChatMessages(chat.id).then((arr) => arr.filter((msg) => msg.user_id === from.id));
+    const { chat, from } = context.message!;
+    const messages = await getChatMessages(chat.id).then((arr: Array<InewMessage>) => arr.filter(
+      (msg) => msg.user_id === from?.id,
+    ));
+
     if (!messages) return context.reply('что-то с ботом или у вас нет сообщений');
+
     const wordStat = countMostUsedWords(messages);
     const wordStatRendered = renderStringWithWordStats(wordStat);
     const dateFirstMsg = new Date(messages[0].date * 1000);
@@ -124,9 +144,9 @@ const getMyStats = async (context) => {
   }
 };
 
-const getWordStats = async (context) => {
-  const { chat, text } = context.message;
-  const [, word] = text.split(' ');
+const getWordStats = async (context: TelegrafContext) => {
+  const { chat, text } = context.message!;
+  const [, word] = text!.split(' ');
   if (word === undefined) return context.reply('укажите слово через пробел после /stat_word ');
   const messages = await getChatMessages(chat.id);
   if (!messages) return null;
@@ -144,12 +164,12 @@ const getWordStats = async (context) => {
   );
 };
 
-const getStatsByTime = async (context, timeRange) => {
+const getStatsByTime = async (context: TelegrafContext, timeRange: string) => {
   try {
     const {
       chat: { id },
-    } = context.message;
-    const dictionary = {
+    } = context.message!;
+    const dictionary: { [key: string]: string } = {
       week: `последние ${textToEmoji(7)} дней`,
       month: `последние ${textToEmoji(30)} дней`,
       day: 'день',
@@ -169,11 +189,6 @@ ${userStatRendered}\n${textToEmoji('small_triangle') + textToEmoji('small_triang
   }
 };
 
-module.exports = {
-  handleStart,
-  allMessagesCount,
-  writeMessageToDb,
-  getStatsByTime,
-  getMyStats,
-  getWordStats,
+export {
+  handleStart, allMessagesCount, writeMessageToDb, getStatsByTime, getMyStats, getWordStats,
 };

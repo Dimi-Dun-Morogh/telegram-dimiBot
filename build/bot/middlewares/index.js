@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isInGroupMiddleWare = void 0;
 const loggers_1 = __importDefault(require("../../helpers/loggers"));
 const chats_1 = require("../../controllers/chats");
 const NAMESPACE = 'BOT-MIDDLEWARE';
@@ -39,6 +40,4 @@ const isInGroupMiddleWare = () => (ctx, next) => __awaiter(void 0, void 0, void 
         loggers_1.default.info(NAMESPACE, `error in  isInGroupMiddleWare: ${error.message}`, error);
     }
 });
-module.exports = {
-    isInGroupMiddleWare,
-};
+exports.isInGroupMiddleWare = isInGroupMiddleWare;

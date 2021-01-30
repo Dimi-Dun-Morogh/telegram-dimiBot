@@ -1,15 +1,17 @@
+import { TelegrafContext } from 'telegraf/typings/context';
 import logger from '../../../helpers/loggers';
+import { AnimeObj } from '../../../interfaces/types';
+import animeIDs from '../../../mocks/animeIds.json';
 
 const fetch = require('node-fetch');
 
 const { textToEmoji } = require('../../../helpers/textConverters');
-const animeIDs = require('../../../mocks/animeIds.json');
 
 const NAMESPACE = 'getAnime/index.js';
 
 const getRandomAnime = async () => {
   const randomId = animeIDs[Math.floor(Math.random() * animeIDs.length)];
-  const result = await fetch(`https://api.jikan.moe/v3/anime/${randomId}`).then((res) => res.json());
+  const result = await fetch(`https://api.jikan.moe/v3/anime/${randomId}`).then((res: any) => res.json());
   const {
     title,
     url,
@@ -37,11 +39,10 @@ const getRandomAnime = async () => {
     episodes,
   };
   // console.log(result);
-  // console.log(animeObj);
   return animeObj;
 };
 
-const translate = async (text) => {
+const translate = async (text: string) => {
   try {
     if (!text) return 'no text';
     const translated = await fetch('https://fasttranslator.herokuapp.com/api/v1/text/to/text', {
@@ -54,14 +55,14 @@ const translate = async (text) => {
         lang: 'en-ru',
         as: 'json',
       }),
-    }).then((res) => res.json());
+    }).then((res: any) => res.json());
     return translated.data;
   } catch (error) {
     logger.info(NAMESPACE, `error translating ${error.message}`, error);
   }
 };
 
-const renderAnimeStr = async (animeObj) => {
+const renderAnimeStr = async (animeObj: AnimeObj) => {
   const {
     title, rating, synopsis, genres, aired, trailer_url, duration, episodes,
   } = animeObj;
@@ -70,21 +71,23 @@ const renderAnimeStr = async (animeObj) => {
   const lightning = textToEmoji('lightning');
   const sr = textToEmoji('saintsRow');
   const speech = textToEmoji('speech');
-  const genresStr = genres ? genres.reduce((acc, { type, name }) => (acc += `[${type} : ${name}] `), '') : false;
+
+  // eslint-disable-next-line no-param-reassign
+  const genresStr = genres ? genres.reduce((acc: string, { type, name }) => (acc += `[${type} : ${name}] `), '') : false;
+
   const text = `${pin}название${pin}: ${title} \n${
     aired.string ? `${lightning}дата выхода${lightning}: ${aired.string}` : null
   }\n\nдлительность: ${duration}\n\nкол-во серий:${episodes}\n\n${speech}краткий обзор${speech}:  ${synopsisRu || synopsis} \n\n${sr}возрастной рейтинг${sr}: ${rating}\n${
     genresStr ? `жанры: ${genresStr}` : ''
   }\n${trailer_url ? `${pin} ${trailer_url}` : ''}`;
+
   return text;
 };
 
-const handleAnime = async (ctx) => {
+export const handleAnime = async (ctx: TelegrafContext) => {
   const anime = await getRandomAnime();
   const text = await renderAnimeStr(anime);
   if (anime.image_url) await ctx.replyWithPhoto(anime.image_url);
   ctx.reply(text);
   logger.info(NAMESPACE, 'отвечаем рандомным аниме', text);
 };
-
-module.exports = handleAnime;

@@ -8,6 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.parseJokes = void 0;
 const fetch = require('node-fetch');
 const cheerio = require('cheerio');
 const he = require('he');
@@ -16,7 +18,7 @@ function parseJokes(context) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const { first_name, last_name, username } = context.message.from;
-            const userStr = `${first_name === undefined ? username : first_name} ${last_name === undefined ? '' : last_name}`;
+            const userStr = `${!first_name ? username : first_name} ${!last_name ? '' : last_name}`;
             const data = yield fetch('https://www.anekdot.ru/random/anekdot/').then((response) => response.text());
             const $ = cheerio.load(data);
             const allJokes = $('.text')
@@ -32,6 +34,4 @@ function parseJokes(context) {
         }
     });
 }
-module.exports = {
-    parseJokes,
-};
+exports.parseJokes = parseJokes;

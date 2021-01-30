@@ -23,7 +23,7 @@ const getChatByChatId = async (id: number) => {
   }
 };
 
-const getAllChats = async () => {
+const getAllChats = async (): Promise<Array<InewChat> | undefined> => {
   try {
     const chats = await getAllItems(chat);
     return chats;

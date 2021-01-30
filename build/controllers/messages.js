@@ -12,31 +12,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getChatMessagesByTime = exports.getChatMessages = exports.createMessage = void 0;
 const message_1 = __importDefault(require("../models/message"));
 const loggers_1 = __importDefault(require("../helpers/loggers"));
-const { createItem } = require('../db/db.crud');
+const db_crud_1 = require("../db/db.crud");
 const NAMESPACE = 'controllers/messages';
 const createMessage = (messageObj) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { from: { username: userName, first_name, last_name, id: user_id }, chat: { id: chat_id, title: chat_title }, date, text, } = messageObj;
-        if (text === undefined || !text)
-            return;
-        const newMsg = yield createItem(message_1.default, {
-            userName,
-            chat_id,
-            chat_title,
-            user_id,
-            date,
-            text,
-            name: `${first_name === undefined ? userName : first_name}${last_name === undefined ? '' : ` ${last_name}`}`,
-        });
-        loggers_1.default.info(NAMESPACE, `created new msg with text "${text}"`);
+        const newMsg = yield db_crud_1.createItem(message_1.default, messageObj);
+        loggers_1.default.info(NAMESPACE, `created new msg with text "${messageObj.text}"`);
         return newMsg;
     }
     catch (error) {
         return Promise.reject(error);
     }
 });
+exports.createMessage = createMessage;
 function getChatMessages(id) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -48,6 +39,7 @@ function getChatMessages(id) {
         }
     });
 }
+exports.getChatMessages = getChatMessages;
 const getChatMessagesByTime = (id, timestamp) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const messages = yield message_1.default.find({ chat_id: id, date: { $gte: timestamp } }).exec();
@@ -57,8 +49,4 @@ const getChatMessagesByTime = (id, timestamp) => __awaiter(void 0, void 0, void 
         return Promise.reject(error);
     }
 });
-module.exports = {
-    createMessage,
-    getChatMessages,
-    getChatMessagesByTime,
-};
+exports.getChatMessagesByTime = getChatMessagesByTime;

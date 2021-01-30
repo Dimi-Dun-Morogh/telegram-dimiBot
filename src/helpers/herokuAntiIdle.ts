@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 
 const NAMESPACE = 'antiIdle.js';
 
-const wakeUpDyno = (url, interval = 25, callback) => {
+const wakeUpDyno = (url: string, interval = 25, callback?: Function) => {
   const milliseconds = interval * 60000;
   setTimeout(() => {
     try {
@@ -17,10 +17,11 @@ const wakeUpDyno = (url, interval = 25, callback) => {
           Will try again in ${interval} minutes...`);
     } finally {
       try {
+        if (!callback) return null;
         callback(); // execute callback, if passed
       } catch (e) {
         // catch callback error
-        callback ? console.log('Callback failed: ', e.message) : null;
+        console.log('Callback failed: ', e.message);
       } finally {
         // do it all again
         // eslint-disable-next-line no-unsafe-finally
@@ -29,4 +30,4 @@ const wakeUpDyno = (url, interval = 25, callback) => {
     }
   }, milliseconds);
 };
-module.exports = wakeUpDyno;
+export default wakeUpDyno;

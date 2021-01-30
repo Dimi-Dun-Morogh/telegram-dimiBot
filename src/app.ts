@@ -1,11 +1,12 @@
-import { Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import logger from './helpers/loggers';
+import { connectDb } from './db/db-connect';
 
-const express = require('express');
-const bot = require('./bot/bot');
-const connectDb = require('./db/db-connect');
-const wakeUpDyno = require('./helpers/herokuAntiIdle');
-const { cronSayRandom } = require('./helpers/cronTasks');
+import bot from './bot/bot';
+
+import wakeUpDyno from './helpers/herokuAntiIdle';
+
+import { cronSayRandom } from './helpers/cronTasks';
 
 const NAMESPACE = 'app.ts';
 connectDb().then(() => logger.info(NAMESPACE, 'connect to db success'));

@@ -1,9 +1,8 @@
+import cron from 'node-cron';
 import { getAllChats } from '../../controllers/chats';
 
 import logger from '../loggers';
-
-const cron = require('node-cron');
-const bot = require('../../bot/bot.js');
+import bot from '../../bot/bot';
 
 const { validChats } = require('../utils.js');
 const { phrases } = require('../textConverters');
@@ -14,7 +13,7 @@ const cronSayRandom = cron
   .schedule('0 0 */12 * * *', async () => {
     logger.info(NAMESPACE, 'random sayin');
     const chats = await getAllChats();
-    const chatIds = chats.map(({ chat_id }) => chat_id);
+    const chatIds = chats!.map(({ chat_id }) => chat_id);
     const validIds = await validChats(chatIds, bot);
     logger.info(NAMESPACE, `cronSayRandom valid ids ${validIds}`);
 
@@ -33,6 +32,4 @@ const cronSayRandom = cron
   })
   .stop();
 
-module.exports = {
-  cronSayRandom,
-};
+export { cronSayRandom };

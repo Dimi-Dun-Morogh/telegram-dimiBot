@@ -1,14 +1,16 @@
+import { TelegrafContext } from 'telegraf/typings/context';
+
 const fetch = require('node-fetch');
 const cheerio = require('cheerio');
 const he = require('he');
 // he for decoding html entities
 const { textToEmoji } = require('../../../helpers/textConverters');
 
-async function parseJokes(context) {
+export async function parseJokes(context: TelegrafContext) {
   try {
-    const { first_name, last_name, username } = context.message.from;
-    const userStr = `${first_name === undefined ? username : first_name} ${last_name === undefined ? '' : last_name}`;
-    const data = await fetch('https://www.anekdot.ru/random/anekdot/').then((response) => response.text());
+    const { first_name, last_name, username } = context.message!.from!;
+    const userStr = `${!first_name ? username : first_name} ${!last_name ? '' : last_name}`;
+    const data = await fetch('https://www.anekdot.ru/random/anekdot/').then((response: any) => response.text());
     const $ = cheerio.load(data);
     const allJokes = $('.text')
       .first()
@@ -21,7 +23,3 @@ async function parseJokes(context) {
     console.log(error.message, 'err joke');
   }
 }
-
-module.exports = {
-  parseJokes,
-};

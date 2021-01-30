@@ -1,30 +1,30 @@
+import { TelegrafContext } from 'telegraf/typings/context';
+import { updateChat, getChatByChatId } from '../../../controllers/chats';
+
 const { syncTimeout } = require('../../../helpers/utils');
-const { updateChat, getChatByChatId } = require('../../../controllers/chats');
+
 const { textToEmoji } = require('../../../helpers/textConverters');
 
-const setRules = async (context) => {
-  const {
-    text,
-    chat,
-    from: { id },
-  } = context.message;
-  console.log('chat id', chat.id);
+const setRules = async (context: TelegrafContext) => {
+  const { text, chat, from } = context.message!;
+  const id = from?.id!;
+
   const admins = await context.getChatAdministrators();
   const isAdmin = Boolean(admins.find(({ user }) => user.id === id));
-  const rulesString = text.slice(10);
+  const rulesString = text!.slice(10);
   if (!isAdmin) return context.reply('Вы не админ и не создатель, кыш `(^.^)`');
   if (!rulesString) return context.reply('Э, а где текст правил???');
   const updChat = await updateChat(chat.id, { rules: rulesString });
   context.reply('хуян.......');
   await syncTimeout(4000);
   await context.reply('хуяндок!');
-  await context.reply(updChat.rules);
+  await context.reply(updChat!.rules!);
   return context.reply('Правила установлены');
 };
 
-const getRules = async (context) => {
+const getRules = async (context: TelegrafContext) => {
   try {
-    const { chat } = context.message;
+    const { chat } = context.message!;
     const remoteChat = await getChatByChatId(chat.id);
     if (!remoteChat) return null;
     const { rules } = remoteChat;
@@ -36,7 +36,7 @@ const getRules = async (context) => {
   }
 };
 
-const handleHelp = (context) => {
+const handleHelp = (context: TelegrafContext) => {
   const helpString = `${textToEmoji('lightning')}Список комманд${textToEmoji('lightning')}\n
 ${textToEmoji('green_snowflake')} /stat - вернет статистику по чату за всё время\n
 ${textToEmoji('green_snowflake')} /stat_day , /stat_week , /stat_month - тоже самое но за день/7дней/30дней\n
@@ -47,8 +47,4 @@ ${textToEmoji('green_snowflake')} /rules - показать правила\n`;
   context.reply(helpString);
 };
 
-module.exports = {
-  setRules,
-  getRules,
-  handleHelp,
-};
+export { setRules, getRules, handleHelp };

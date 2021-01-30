@@ -29,6 +29,4 @@ const isInGroupMiddleWare = () => async (ctx: TelegrafContext, next: NextFunctio
   }
 };
 
-module.exports = {
-  isInGroupMiddleWare,
-};
+export { isInGroupMiddleWare };

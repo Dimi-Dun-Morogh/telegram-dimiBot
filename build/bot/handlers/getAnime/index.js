@@ -12,13 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.handleAnime = void 0;
 const loggers_1 = __importDefault(require("../../../helpers/loggers"));
+const animeIds_json_1 = __importDefault(require("../../../mocks/animeIds.json"));
 const fetch = require('node-fetch');
 const { textToEmoji } = require('../../../helpers/textConverters');
-const animeIDs = require('../../../mocks/animeIds.json');
 const NAMESPACE = 'getAnime/index.js';
 const getRandomAnime = () => __awaiter(void 0, void 0, void 0, function* () {
-    const randomId = animeIDs[Math.floor(Math.random() * animeIDs.length)];
+    const randomId = animeIds_json_1.default[Math.floor(Math.random() * animeIds_json_1.default.length)];
     const result = yield fetch(`https://api.jikan.moe/v3/anime/${randomId}`).then((res) => res.json());
     const { title, url, image_url, trailer_url, status, duration, rating, synopsis, genres, aired: { string }, episodes, } = result;
     const animeObj = {
@@ -76,4 +77,4 @@ const handleAnime = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     ctx.reply(text);
     loggers_1.default.info(NAMESPACE, 'отвечаем рандомным аниме', text);
 });
-module.exports = handleAnime;
+exports.handleAnime = handleAnime;
