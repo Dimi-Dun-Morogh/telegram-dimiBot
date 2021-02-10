@@ -59,7 +59,7 @@ const translate = (text) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 const renderAnimeStr = (animeObj) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, rating, synopsis, genres, aired, trailer_url, duration, episodes } = animeObj;
+    const { title, rating, synopsis, genres, aired, trailer_url, duration, episodes, } = animeObj;
     const synopsisRu = yield translate(synopsis);
     const pin = textToEmoji('pin');
     const lightning = textToEmoji('lightning');

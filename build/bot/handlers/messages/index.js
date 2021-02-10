@@ -49,7 +49,7 @@ const allMessagesCount = (context) => __awaiter(void 0, void 0, void 0, function
 });
 exports.allMessagesCount = allMessagesCount;
 const writeMessageToDb = (context) => {
-    const { text, chat, caption, from, date } = context.message;
+    const { text, chat, caption, from, date, } = context.message;
     if ((text || caption) && (chat.type === 'group' || chat.type === 'supergroup')) {
         const msgString = typeof text === 'string' ? text : caption;
         const newMsgObj = {
@@ -155,7 +155,7 @@ const getWordStats = (context) => __awaiter(void 0, void 0, void 0, function* ()
     Object.entries(wordStat)
         .filter(([key]) => key.includes(word.toLowerCase()))
         .forEach(([key, value]) => (varietyStr += `\n${key} : ${value} ${textToEmoji('lightning')}`));
-    console.log(stats);
+    console.log(stats, 'wordstat');
     return context.reply(`начиная с ${date.toLocaleDateString()} слово ${textToEmoji('pin')}"${word}"${textToEmoji('pin')} было написано ${stats} раз${textToEmoji('boom')}\n включая вариации:\n ${varietyStr}`);
 });
 exports.getWordStats = getWordStats;

@@ -11,11 +11,12 @@ const deleteItem = (collection: Model<any>, id: ID) => collection.findOneAndRemo
 
 const updateItem = (collection: Model<any>, data: DataObj) => createItem(collection, data);
 
-const getItemByName = (collection: Model<any>, nameVal: string) =>
-  collection.findOne({
-    name: nameVal,
-  });
+const getItemByName = (collection: Model<any>, nameVal: string) => collection.findOne({
+  name: nameVal,
+});
 
 const getItemByChatId = (collection: Model<any>, id: ID) => collection.findOne({ chat_id: id });
 
-export { getItemById, getAllItems, createItem, deleteItem, updateItem, getItemByName, getItemByChatId };
+export {
+  getItemById, getAllItems, createItem, deleteItem, updateItem, getItemByName, getItemByChatId,
+};

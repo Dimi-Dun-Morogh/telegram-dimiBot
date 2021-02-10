@@ -38,7 +38,9 @@ const allMessagesCount = async (context: TelegrafContext) => {
 };
 
 const writeMessageToDb = (context: TelegrafContext) => {
-  const { text, chat, caption, from, date } = context.message!;
+  const {
+    text, chat, caption, from, date,
+  } = context.message!;
   if ((text || caption) && (chat.type === 'group' || chat.type === 'supergroup')) {
     const msgString = typeof text === 'string' ? text : caption;
 
@@ -88,19 +90,18 @@ const countMsgsForEachUser = (msgArray: Array<InewMessage>) => {
   return countMsgs;
 };
 
-const countMostUsedWords = (msgArray: Array<InewMessage>): IwordStat =>
-  msgArray.reduce((acc: any, { text = '' }) => {
-    // удалим \n .replaceAll('\n', ' ') и ,!.
-    const words = text
-      .replace(/\n/g, ' ')
-      .replace(/[.,?!]/g, '')
-      .split(' ');
-    words.forEach((word) => {
-      const wordLc = word.toLowerCase();
-      if (word.length > 2) acc[wordLc] = acc[wordLc] + 1 || 1;
-    });
-    return acc;
-  }, {});
+const countMostUsedWords = (msgArray: Array<InewMessage>): IwordStat => msgArray.reduce((acc: any, { text = '' }) => {
+  // удалим \n .replaceAll('\n', ' ') и ,!.
+  const words = text
+    .replace(/\n/g, ' ')
+    .replace(/[.,?!]/g, '')
+    .split(' ');
+  words.forEach((word) => {
+    const wordLc = word.toLowerCase();
+    if (word.length > 2) acc[wordLc] = acc[wordLc] + 1 || 1;
+  });
+  return acc;
+}, {});
 
 const renderStringWithWordStats = (wordStat: IwordStat) => {
   let strResult = `${textToEmoji('lightning')} Топ ${textToEmoji(10)} слов: \n`;
@@ -125,7 +126,9 @@ const renderStringWithUserStats = (userStat: IusersStat) => {
 const getMyStats = async (context: TelegrafContext) => {
   try {
     const { chat, from } = context.message!;
-    const messages = await getChatMessages(chat.id).then((arr: Array<InewMessage>) => arr.filter((msg) => msg.user_id === from?.id));
+    const messages = await getChatMessages(chat.id).then((arr: Array<InewMessage>) => arr.filter(
+      (msg) => msg.user_id === from?.id,
+    ));
 
     if (!messages) return context.reply('что-то с ботом или у вас нет сообщений');
 
@@ -133,7 +136,7 @@ const getMyStats = async (context: TelegrafContext) => {
     const wordStatRendered = renderStringWithWordStats(wordStat);
     const dateFirstMsg = new Date(messages[0].date * 1000);
     const finalString = `статистика для ${textToEmoji('saintsRow')}${messages[messages.length - 1].name}${textToEmoji(
-      'saintsRow'
+      'saintsRow',
     )} начиная с ${dateFirstMsg.toLocaleDateString()}:\n сообщений ${textToEmoji(messages.length)}\n\n${wordStatRendered}`;
     return context.reply(finalString);
   } catch (error) {
@@ -155,10 +158,10 @@ const getWordStats = async (context: TelegrafContext) => {
   Object.entries(wordStat)
     .filter(([key]) => key.includes(word.toLowerCase()))
     .forEach(([key, value]) => (varietyStr += `\n${key} : ${value} ${textToEmoji('lightning')}`));
-  console.log(stats);
+  console.log(stats, 'wordstat');
   // if (stats === undefined) return context.reply(`для ${word} еще нет статистики`);
   return context.reply(
-    `начиная с ${date.toLocaleDateString()} слово ${textToEmoji('pin')}"${word}"${textToEmoji('pin')} было написано ${stats} раз${textToEmoji('boom')}\n включая вариации:\n ${varietyStr}`
+    `начиная с ${date.toLocaleDateString()} слово ${textToEmoji('pin')}"${word}"${textToEmoji('pin')} было написано ${stats} раз${textToEmoji('boom')}\n включая вариации:\n ${varietyStr}`,
   );
 };
 
@@ -180,11 +183,13 @@ const getStatsByTime = async (context: TelegrafContext, timeRange: string) => {
     const userStatRendered = renderStringWithUserStats(userStat);
     context.reply(
       `${textToEmoji('saintsRow')}Cообщений за ${dictionary[timeRange]} - ${textToEmoji(messages.length)}\n
-${userStatRendered}\n${textToEmoji('small_triangle') + textToEmoji('small_triangle') + textToEmoji('small_triangle') + textToEmoji('small_triangle')}\n\n${wordStatRendered}`
+${userStatRendered}\n${textToEmoji('small_triangle') + textToEmoji('small_triangle') + textToEmoji('small_triangle') + textToEmoji('small_triangle')}\n\n${wordStatRendered}`,
     );
   } catch (error) {
     console.log(error);
   }
 };
 
-export { handleStart, allMessagesCount, writeMessageToDb, getStatsByTime, getMyStats, getWordStats };
+export {
+  handleStart, allMessagesCount, writeMessageToDb, getStatsByTime, getMyStats, getWordStats,
+};

@@ -1,6 +1,6 @@
 {
     "singleQuote": true,
-    "printWidth": 200,
+    "printWidth": 100,
     "proseWrap": "always",
     "useTabs": false,
     "semi": true
