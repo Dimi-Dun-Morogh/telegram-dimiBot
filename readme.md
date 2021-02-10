@@ -21,7 +21,7 @@ list of bot's commands can be seen on screenshots below:
 ##### /stat_word
 ![alt text](./img/stat_word.JPG)
 
-####log:
+#### log:
 
 - [x] create a function/controller to get all msg's for specific amount of time (currentDay,last 7 days, last 30 days)(20.10.2020) ✅
 - [x] create a function to count messages for each user (20.10.2020) ✅
@@ -33,4 +33,5 @@ list of bot's commands can be seen on screenshots below:
 - [ ] refactor data-base, crud methods, message strings should be put in array of chat/user document
 - [x] implement a logic to parse jokes from some site and post them with bot command (29.10.2020) ✅
 - [x] implement get/set rules for chat (28.10.2020) ✅
-- [ ] migrate to TypeScript
+- [x] migrate to TypeScript (30.01.2021) ✅
+- [x] fix stat_word being case sensetive (10.02.2021) ✅
