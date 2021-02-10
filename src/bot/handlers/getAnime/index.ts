@@ -63,9 +63,7 @@ const translate = async (text: string) => {
 };
 
 const renderAnimeStr = async (animeObj: AnimeObj) => {
-  const {
-    title, rating, synopsis, genres, aired, trailer_url, duration, episodes,
-  } = animeObj;
+  const { title, rating, synopsis, genres, aired, trailer_url, duration, episodes } = animeObj;
   const synopsisRu = await translate(synopsis);
   const pin = textToEmoji('pin');
   const lightning = textToEmoji('lightning');

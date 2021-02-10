@@ -1,8 +1,6 @@
 import { Telegraf } from 'telegraf';
 import logger from '../helpers/loggers';
-import {
-  handleStart, writeMessageToDb, getStatsByTime, getMyStats, getWordStats,
-} from './handlers/messages/index';
+import { handleStart, writeMessageToDb, getStatsByTime, getMyStats, getWordStats } from './handlers/messages/index';
 
 import config from '../config/telegram';
 

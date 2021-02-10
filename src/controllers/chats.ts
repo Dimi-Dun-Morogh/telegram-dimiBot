@@ -41,6 +41,4 @@ const updateChat = async (id: number, data: any) => {
     logger.info(NAMESPACE, `error updateChat, ${error.message}`);
   }
 };
-export {
-  createChat, getChatByChatId, updateChat, getAllChats,
-};
+export { createChat, getChatByChatId, updateChat, getAllChats };

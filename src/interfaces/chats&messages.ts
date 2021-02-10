@@ -35,6 +35,4 @@ interface IwordStat {
   [key: string]: number;
 }
 
-export {
-  InewChat, IChatModel, ImessageModel, InewMessage, IusersStat, IwordStat,
-};
+export { InewChat, IChatModel, ImessageModel, InewMessage, IusersStat, IwordStat };
