@@ -3,7 +3,10 @@ const logger = {
     hour12: false,
   }),
   info(namespace: string, message: string, object?: any) {
-    console.log(`${this.getTimeStamp()} [${namespace}] [${message}]`, object || '');
+    console.log(`${this.getTimeStamp()} [INFO] [${namespace}] [${message}]`, object || '');
+  },
+  error(namespace: string, message: string, object?: any) {
+    console.log(`${this.getTimeStamp()} [ERROR] [${namespace}] [${message}]`, object || '');
   },
 };
 
