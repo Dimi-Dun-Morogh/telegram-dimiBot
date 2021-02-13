@@ -14,6 +14,7 @@ import { isInGroupMiddleWare } from './middlewares';
 import { handleAnime } from './handlers/getAnime';
 
 import { setRules, getRules, handleHelp } from './handlers/chat_admin';
+import { handleGiveAway } from './handlers/epic-games';
 
 const NAMESPACE = 'bot';
 const bot = new Telegraf(config.botApiKey!);
@@ -56,6 +57,8 @@ bot.command('/anime', (ctx) => {
   logger.info(NAMESPACE, `/anime in chat:${ctx.chat!.id!}`);
   handleAnime(ctx);
 });
+
+bot.command('/games_info', (ctx) => handleGiveAway(ctx));
 
 // cлушаем ивент "сообщение" здесь можно будет записывать все сообщения в ДБ.
 bot.on('message', (ctx) => {

@@ -40,6 +40,15 @@ const renderMsg = {
     )} начиная с ${dateFirstMsg.toLocaleDateString()}:\n сообщений ${textToEmoji(messages.length)}\n\n${wordStat}`;
   },
 
+  giveAway(obj: {[key:string]: {[key:string]: string}}) {
+    const games = Object.entries(obj).reduce((acc, [title, { date, link }]) => {
+      const res = `${textToEmoji('pin')}${title} : ${date}\nссылка - ${link}\n`;
+      let newAcc = acc;
+      return newAcc += res;
+    }, '');
+    return `${textToEmoji('saintsRow')}Текущие раздачи в Epic Games${textToEmoji('saintsRow')}:\n\n${games}`;
+  },
+
 };
 
 export { renderMsg };

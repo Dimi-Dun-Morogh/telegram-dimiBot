@@ -6,7 +6,8 @@ import bot from './bot/bot';
 
 import wakeUpDyno from './helpers/herokuAntiIdle';
 
-import { cronSayRandom } from './helpers/cronTasks';
+import { cronEGGiveAway, cronSayRandom } from './helpers/cronTasks';
+import { epicGames } from './bot/handlers/epic-games/giveAway';
 
 const NAMESPACE = 'app.ts';
 connectDb().then(() => logger.info(NAMESPACE, 'connect to db success'));
@@ -31,3 +32,9 @@ app.listen(process.env.PORT, () => {
 });
 
 cronSayRandom.start();
+
+// epic-games
+
+setTimeout(() => epicGames.parseGames(), 40000);
+
+cronEGGiveAway.start();

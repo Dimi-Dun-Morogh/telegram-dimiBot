@@ -3,6 +3,8 @@ import { getAllChats } from '../../controllers/chats';
 
 import logger from '../loggers';
 import bot from '../../bot/bot';
+import { renderMsg } from '../../bot/bot-utils/renderMessages';
+import { epicGames } from '../../bot/handlers/epic-games/giveAway';
 
 const { validChats } = require('../utils.js');
 const { phrases } = require('../textConverters');
@@ -32,4 +34,23 @@ const cronSayRandom = cron
   })
   .stop();
 
-export { cronSayRandom };
+// '0 0 12 */5 * *'
+const cronEGGiveAway = cron.schedule('0 0 12 * * */5', async () => {
+  try {
+    logger.info(NAMESPACE, 'fetching new giveAway Epic Games info');
+    const chats = await getAllChats();
+    const chatIds = chats!.map(({ chat_id }) => chat_id);
+    const validIds = await validChats(chatIds, bot);
+    console.log(validIds);
+
+    await epicGames.parseGames();
+    const { games } = epicGames;
+    const msg = renderMsg.giveAway(games);
+    const promises = validIds.map((id:number|string) => bot.telegram.sendMessage(id, msg));
+    Promise.all(promises);
+  } catch (error) {
+    logger.error(NAMESPACE, 'error cronEGGiveaway', error);
+  }
+}).stop();
+
+export { cronSayRandom, cronEGGiveAway };
