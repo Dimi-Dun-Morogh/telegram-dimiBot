@@ -40,3 +40,4 @@ list of bot's commands can be seen on screenshots below:
 - [x] migrate to TypeScript (30.01.2021) ✅
 - [x] fix stat_word being case sensetive (10.02.2021) ✅
 - [x] create logic/task/command to parse/send info about epic games giveaways (13.02.2021) ✅
+

@@ -35,7 +35,7 @@ const cronSayRandom = cron
   .stop();
 
 // '0 0 12 */5 * *'
-const cronEGGiveAway = cron.schedule('0 0 12 * * */5', async () => {
+const cronEGGiveAway = cron.schedule('0 0 12 * * 5', async () => {
   try {
     logger.info(NAMESPACE, 'fetching new giveAway Epic Games info');
     const chats = await getAllChats();
@@ -44,10 +44,10 @@ const cronEGGiveAway = cron.schedule('0 0 12 * * */5', async () => {
     console.log(validIds);
 
     await epicGames.parseGames();
-    const { games } = epicGames;
-    const msg = renderMsg.giveAway(games);
-    const promises = validIds.map((id:number|string) => bot.telegram.sendMessage(id, msg));
-    Promise.all(promises);
+    // const { games } = epicGames;
+    // const msg = renderMsg.giveAway(games);
+    // const promises = validIds.map((id:number|string) => bot.telegram.sendMessage(id, msg));
+    // Promise.all(promises);
   } catch (error) {
     logger.error(NAMESPACE, 'error cronEGGiveaway', error);
   }
