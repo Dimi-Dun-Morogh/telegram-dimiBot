@@ -34,7 +34,8 @@ const epicGames = {
         });
         const filtered = [...spansNeeded].filter((item) => item.dataset.component !== 'Message');
         console.log(filtered);
-        const final = filtered.reduce((acc, elem) => {
+        const final = filtered.reduce((acc, elem, index) => {
+          if (index === 0) return acc;
           const date = elem.textContent;
           const title = elem.parentElement.firstChild.textContent;
           const link = elem.parentElement.parentElement.parentElement.parentElement.parentElement.querySelector('a').href;

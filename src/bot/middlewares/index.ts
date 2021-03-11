@@ -11,7 +11,7 @@ const isInGroupMiddleWare = () => async (ctx: TelegrafContext, next: NextFunctio
     if (!ctx || !ctx.message || !ctx.message.text) return null;
     const { chat, text } = ctx.message;
     logger.info(NAMESPACE, `chat: ${chat.id}, text: ${text}`);
-    const allowedCommands = ['/help', '/joke', '/start', '/anime'];
+    const allowedCommands = ['/help', '/joke', '/start', '/anime', '/games_info'];
     const chatCommands = ['/stat', '/stat_day', '/stat_week', '/stat_month', '/set_rules', '/rules'];
     const isChatCommand = chatCommands.some((item) => text.includes(item));
     if (chat.type === 'private' && !allowedCommands.includes(text)) {

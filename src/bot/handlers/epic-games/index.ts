@@ -6,5 +6,5 @@ export const handleGiveAway = async (ctx: TelegrafContext) => {
   //
   const { games } = epicGames;
   const msg = renderMsg.giveAway(games);
-  ctx.reply(msg);
+  ctx.reply(msg, { disable_web_page_preview: true });
 };

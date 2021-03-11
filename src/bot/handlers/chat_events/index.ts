@@ -8,7 +8,7 @@ const handleLeave = (context: TelegrafContext) => {
   try {
     const { username, first_name, last_name } = context.update.message!.left_chat_member!;
     // console.log(context.update.message?.left_chat_member);
-    const farewells = ['...A! Ну давай', 'ПАЛ ДЕВОЧКА', 'ЯСНА БАН'];
+    const farewells = ['...A! Ну давай', 'ПАЛ ДЕВОЧКА', 'ЯСНА БАН', 'БАН НАХОЙ', 'Пал дебил'];
     const randomBye = farewells[Math.floor(Math.random() * farewells.length)];
     context.reply(`${first_name === undefined ? username : first_name} ${last_name === undefined ? '' : last_name} ${randomBye}`);
   } catch (error) {
