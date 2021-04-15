@@ -25,6 +25,9 @@ list of bot's commands can be seen on screenshots below:
 ##### /games_info
 ![alt text](./img/games_info.JPG)
 
+##### when and info
+![alt text](./img/when_and_info.JPG)
+
 #### log:
 
 - [x] create a function/controller to get all msg's for specific amount of time (currentDay,last 7 days, last 30 days)(20.10.2020) ✅
@@ -40,4 +43,5 @@ list of bot's commands can be seen on screenshots below:
 - [x] migrate to TypeScript (30.01.2021) ✅
 - [x] fix stat_word being case sensetive (10.02.2021) ✅
 - [x] create logic/task/command to parse/send info about epic games giveaways (13.02.2021) ✅
+- [ ] create who/when/info commands
 

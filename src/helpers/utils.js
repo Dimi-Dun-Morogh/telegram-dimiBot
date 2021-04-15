@@ -25,7 +25,18 @@ const validChats = async (chatIds, bot) => {
   return res.filter((item) => item !== undefined);
 };
 
+function randomDate(startHour, endHour) {
+  const start = new Date();
+  const end = new Date();
+  end.setFullYear(start.getFullYear() + 3);
+  const date = new Date(+start + Math.random() * (end - start));
+  const hour = startHour + Math.random() * (endHour - startHour) | 0;
+  date.setHours(hour);
+  return date.toLocaleDateString();
+}
+
 module.exports = {
   syncTimeout,
   validChats,
+  randomDate,
 };

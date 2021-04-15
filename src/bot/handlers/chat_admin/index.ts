@@ -43,6 +43,8 @@ ${textToEmoji('green_snowflake')} /stat_day , /stat_week , /stat_month - тож�
 ${textToEmoji('green_snowflake')} /set_rules - установить правила чата( /set_rules любой текст) доступно только админам\n
 ${textToEmoji('green_snowflake')} /joke - рассказать анекдот\n
 ${textToEmoji('green_snowflake')} /anime - рандомное аниме\n
+${textToEmoji('green_snowflake')} /games_info - показать текущие раздачи в ЕГС магазине\n
+${textToEmoji('green_snowflake')} бот когда / бот инфо - узнать  вероятность или дату чего либо, пример "бот когда рак свиснет"\n
 ${textToEmoji('green_snowflake')} /rules - показать правила\n`;
   context.reply(helpString);
 };
