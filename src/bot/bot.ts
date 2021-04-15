@@ -15,7 +15,9 @@ import { handleAnime } from './handlers/getAnime';
 
 import { setRules, getRules, handleHelp } from './handlers/chat_admin';
 import { handleGiveAway } from './handlers/epic-games';
-import { handleWhen, handleWho, handleInfo } from './handlers/chat_random';
+import {
+  handleWhen, handleWho, handleInfo, handleRandomReply,
+} from './handlers/chat_random';
 
 const NAMESPACE = 'bot';
 const bot = new Telegraf(config.botApiKey!);
@@ -66,6 +68,8 @@ bot.command('/games_info', (ctx) => handleGiveAway(ctx));
 bot.hears(/^бот когда\W+/g, (ctx) => handleWhen(ctx));
 
 bot.hears(/^бот инфа\W+/g, (ctx) => handleInfo(ctx));
+
+bot.hears(['да', 'Да', 'ДА', 'нет', 'Нет', 'НЕТ', 'незнаю', 'не знаю', 'Че', 'че', 'ЧЕ'], (ctx) => handleRandomReply(ctx));
 
 // cлушаем ивент "сообщение" здесь можно будет записывать все сообщения в ДБ.
 bot.on('message', (ctx) => {
