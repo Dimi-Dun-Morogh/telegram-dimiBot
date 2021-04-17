@@ -18,6 +18,7 @@ import { handleGiveAway } from './handlers/epic-games';
 import {
   handleWhen, handleWho, handleInfo, handleRandomReply,
 } from './handlers/chat_random';
+import handleMeme from './handlers/get_meme';
 
 const NAMESPACE = 'bot';
 const bot = new Telegraf(config.botApiKey!);
@@ -62,6 +63,8 @@ bot.command('/anime', (ctx) => {
 });
 
 bot.command('/games_info', (ctx) => handleGiveAway(ctx));
+
+bot.command('/meme', (ctx) => handleMeme(ctx));
 
 // bot.hears(/^бот кто\W+/g, (ctx) => handleWho(ctx)); //! todo
 

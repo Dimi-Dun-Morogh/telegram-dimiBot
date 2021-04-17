@@ -14,6 +14,9 @@ list of bot's commands can be seen on screenshots below:
 
 ##### /anime
 ![alt text](./img/anime.JPG)
+
+##### /meme
+![alt text](./img/meme.JPG)
 ##### greetings
 ![alt text](./img/greetings.JPG)
 ##### /stat_me
@@ -44,4 +47,5 @@ list of bot's commands can be seen on screenshots below:
 - [x] fix stat_word being case sensetive (10.02.2021) ✅
 - [x] create logic/task/command to parse/send info about epic games giveaways (13.02.2021) ✅
 - [ ] create who/when/info commands
+- [x] create a random meme command (17.04.2021) ✅
 
