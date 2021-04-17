@@ -93,9 +93,11 @@ const getMyStats = async (context: TelegrafContext) => {
 };
 
 const getWordStats = async (context: TelegrafContext) => {
-  const { chat, text } = context.message!;
+  const { chat, text, message_id } = context.message!;
   const [, word] = text!.split(' ');
+
   if (word === undefined) return context.reply('укажите слово через пробел после /stat_word ');
+  if (word.length < 3) return context.reply('не балуй', { reply_to_message_id: message_id });
   const messages = await getChatMessages(chat.id);
   if (!messages) return null;
   const stats = renderMsg.wordStatsStr(messages, word);
