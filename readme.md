@@ -31,6 +31,8 @@ list of bot's commands can be seen on screenshots below:
 ##### when and info
 ![alt text](./img/when_and_info.JPG)
 
+##### uptime page https://dimi-tg.herokuapp.com/bot-status
+![alt text](./img/uptime_page.JPG)
 #### log:
 
 - [x] create a function/controller to get all msg's for specific amount of time (currentDay,last 7 days, last 30 days)(20.10.2020) ✅
@@ -48,4 +50,5 @@ list of bot's commands can be seen on screenshots below:
 - [x] create logic/task/command to parse/send info about epic games giveaways (13.02.2021) ✅
 - [ ] create who/when/info commands
 - [x] create a random meme command (17.04.2021) ✅
+- [x] created simple uptime html page https://dimi-tg.herokuapp.com/bot-status (18.04.2021) ✅
 

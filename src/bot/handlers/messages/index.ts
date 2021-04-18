@@ -32,7 +32,7 @@ const handleStart = async (context: TelegrafContext) => {
 const allMessagesCount = async (context: TelegrafContext) => {
   try {
     const messages = await getChatMessages(context.message?.chat.id!);
-    return context.reply(`сообщений за всё время ${messages.length}`);
+    return context.reply(`сообщений за всё время ${messages!.length}`);
   } catch (error) {
     logger.error(NAMESPACE, error.message, error);
   }
@@ -79,6 +79,7 @@ const MessagesByTime = async (chatId: number, timeRange: string) => {
 const getMyStats = async (context: TelegrafContext) => {
   try {
     const { chat, from } = context.message!;
+    // @ts-ignore
     const messages = await getChatMessages(chat.id).then((arr: Array<InewMessage>) => arr.filter(
       (msg) => msg.user_id === from?.id,
     ));

@@ -1,3 +1,4 @@
+import chatState from '../bot/state';
 import logger from './loggers';
 
 const NAMESPACE = 'utils.js';
@@ -35,8 +36,32 @@ function randomDate(startHour, endHour) {
   return date.toLocaleDateString();
 }
 
+function BotStatusHtml(uptime) {
+  return `
+  <!DOCTYPE html>
+  <html>
+  <style>body {
+    margin: 0 25%;
+  text-align: center;
+  color: green;
+  font-size: 140%;
+  }
+  </style>
+  <head>
+      <title>bot-status</title>
+      <meta charset="utf-8" />
+  </head>
+  <body>
+      <h1>бот аптайм с: ${uptime}</h1>
+      <h3>последнее сообщение: ${chatState.latestMessage}</h3>
+  </body>
+  <html>
+`;
+}
+
 module.exports = {
   syncTimeout,
   validChats,
   randomDate,
+  BotStatusHtml,
 };

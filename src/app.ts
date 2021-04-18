@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import logger from './helpers/loggers';
 import { connectDb } from './db/db-connect';
-
 import bot from './bot/bot';
 
 import wakeUpDyno from './helpers/herokuAntiIdle';
@@ -9,14 +8,20 @@ import wakeUpDyno from './helpers/herokuAntiIdle';
 import { cronEGGiveAway, cronSayRandom } from './helpers/cronTasks';
 import { epicGames } from './bot/handlers/epic-games/giveAway';
 
+const { BotStatusHtml } = require('./helpers/utils');
+
 const NAMESPACE = 'app.ts';
+let uptime = '';
+
 connectDb().then(() => logger.info(NAMESPACE, 'connect to db success'));
 bot
   .launch()
-  .then(() => logger.info(NAMESPACE, 'bot up and running'))
+  .then(() => {
+    logger.info(NAMESPACE, 'bot up and running');
+    uptime = new Date().toLocaleString();
+  })
   .catch((error: Error) => console.error(error));
 
-// bot.stop();
 // anti idle conspiracy
 const URL = 'https://dimi-tg.herokuapp.com/';
 const app = express();
@@ -27,7 +32,13 @@ app.get('/', (request: Request, response: Response) => {
   logger.info(NAMESPACE, `${Date.now()} Ping Received`);
   response.sendStatus(200);
 });
-app.listen(process.env.PORT, () => {
+
+app.get('/bot-status', (request: Request, response: Response) => {
+  logger.info(NAMESPACE, `${Date.now()} bot-status`);
+  response.send(BotStatusHtml(uptime));
+});
+
+app.listen(process.env.PORT || 3111, () => {
   wakeUpDyno(URL);
 });
 
