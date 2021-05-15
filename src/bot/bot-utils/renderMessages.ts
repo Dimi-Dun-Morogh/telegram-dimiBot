@@ -1,6 +1,13 @@
-import { textToEmoji } from '../../helpers/textConverters';
+import { textToEmoji, emojis } from '../../helpers/textConverters';
 import { InewMessage } from '../../interfaces/chats&messages';
+import { ISerialized } from '../../interfaces/weatherData';
 import { messageStats } from './messageStats';
+
+const { formatDate } = require('../../helpers/utils');
+
+const {
+  pin, green_snowflake, sun, black_moon, clock, saintsRow, small_triangle
+} = emojis;
 
 const renderMsg = {
   dictionary: {
@@ -14,8 +21,8 @@ const renderMsg = {
     const wordStatString = messageStats.wordStats(messages);
     const userStatString = messageStats.userStats(messages);
 
-    return `${textToEmoji('saintsRow')}Cообщений за ${this.dictionary[timeRange]} - ${textToEmoji(messages.length)}\n
-    ${userStatString}\n${textToEmoji('small_triangle') + textToEmoji('small_triangle') + textToEmoji('small_triangle') + textToEmoji('small_triangle')}\n\n${wordStatString}`;
+    return `${saintsRow}Cообщений за ${this.dictionary[timeRange]} - ${textToEmoji(messages.length)}\n
+    ${userStatString}\n${small_triangle + small_triangle + small_triangle + small_triangle}\n\n${wordStatString}`;
   },
 
   wordStatsStr(messages: Array<InewMessage>, word:string) {
@@ -29,7 +36,7 @@ const renderMsg = {
       .forEach(([key, value]) => (varietyStr += `\n${key} : ${value} ${textToEmoji('lightning')}`));
     console.log(stats, 'wordstat');
 
-    return `начиная с ${date.toLocaleDateString()} слово ${textToEmoji('pin')}"${word}"${textToEmoji('pin')} было написано ${stats} раз${textToEmoji('boom')}\n включая вариации:\n ${varietyStr}`;
+    return `начиная с ${date.toLocaleDateString()} слово ${pin}"${word}"${pin} было написано ${stats} раз${textToEmoji('boom')}\n включая вариации:\n ${varietyStr}`;
   },
 
   myStatsStr(messages: Array<InewMessage>) {
@@ -47,6 +54,25 @@ const renderMsg = {
       return newAcc += res;
     }, '');
     return `${textToEmoji('saintsRow')}Текущие раздачи в Epic Games${textToEmoji('saintsRow')}:\n\n${games}`;
+  },
+
+  weatherString(obj: ISerialized) {
+    const { weather_today, city } = obj;
+    const {
+      name, population, sunrise, sunset,
+    } = city;
+
+    const weatherStats = Object.values(weather_today).reduce((acc, dayCut) => {
+      const { time, main: { temp }, weather } = dayCut;
+      let newAcc = acc;
+      const res = `${clock} ${time}      ${temp > 0 ? `+${temp}` : temp}, ${weather ? weather[0].description : ''}${saintsRow}\n`;
+      newAcc += res;
+      return newAcc;
+    }, '');
+    return `${green_snowflake}Погода${green_snowflake} сегодня в ${pin + name + pin}:\n
+${weatherStats}
+население: ${population}; ${black_moon}заход солнца: ${formatDate(sunset)}; ${sun}рассвет: ${formatDate(sunrise)}
+    `;
   },
 
 };

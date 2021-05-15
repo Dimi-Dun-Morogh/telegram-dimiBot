@@ -11,16 +11,22 @@ export const handleWho = async (ctx: TelegrafContext) => {
 
 export const handleWhen = (ctx: TelegrafContext) => {
   const { message_id, text } = ctx.message!;
-  const messageText = text?.slice(10);
+  const messageText = text?.split(' ');
+  const msgStr = messageText![0].toLowerCase() === 'бот' ? messageText?.slice(2).join(' ')
+    : messageText?.slice(1).join(' ');
+
   const timeWhen = randomDate();
-  ctx.reply(`я думаю ${messageText} - случится ${timeWhen}`, { reply_to_message_id: message_id });
+  ctx.reply(`я думаю ${msgStr} - случится ${timeWhen}`, { reply_to_message_id: message_id });
 };
 
 export const handleInfo = (ctx: TelegrafContext) => {
   const { message_id, text } = ctx.message!;
-  const messageText = text?.slice(9);
+  const messageText = text?.split(' ');
+  const msgStr = messageText![0].toLowerCase() === 'бот' ? messageText?.slice(2).join(' ')
+    : messageText?.slice(1).join(' ');
   const randomNumber = Math.floor(Math.random() * 101);
-  ctx.reply(`инфа шо ${messageText} - ${randomNumber}%`, { reply_to_message_id: message_id });
+
+  ctx.reply(`вероятность шо ${msgStr} - ${randomNumber}%`, { reply_to_message_id: message_id });
 };
 
 export const handleRandomReply = (ctx: TelegrafContext) => {

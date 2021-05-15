@@ -33,6 +33,8 @@ list of bot's commands can be seen on screenshots below:
 
 ##### uptime page https://dimi-tg.herokuapp.com/bot-status
 ![alt text](./img/uptime_page.JPG)
+##### bot weather
+![alt text](./img/weather.JPG)
 #### log:
 
 - [x] create a function/controller to get all msg's for specific amount of time (currentDay,last 7 days, last 30 days)(20.10.2020) ✅
@@ -51,4 +53,5 @@ list of bot's commands can be seen on screenshots below:
 - [ ] create who/when/info commands
 - [x] create a random meme command (17.04.2021) ✅
 - [x] created simple uptime html page https://dimi-tg.herokuapp.com/bot-status (18.04.2021) ✅
+- [x] created bot weather city_name command (15.05.2021) ✅
 

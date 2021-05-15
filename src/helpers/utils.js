@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import chatState from '../bot/state';
 import logger from './loggers';
 
@@ -44,6 +45,7 @@ function BotStatusHtml(uptime) {
     margin: 0 25%;
   text-align: center;
   color: green;
+  background-color: blanchedalmond;
   font-size: 140%;
   }
   </style>
@@ -59,9 +61,15 @@ function BotStatusHtml(uptime) {
 `;
 }
 
+function formatDate(val) {
+  const date = new Date(val * 1000);
+  return format(date, 'HH:mm');
+}
+
 module.exports = {
   syncTimeout,
   validChats,
   randomDate,
   BotStatusHtml,
+  formatDate,
 };

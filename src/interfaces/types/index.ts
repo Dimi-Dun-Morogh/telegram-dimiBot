@@ -25,4 +25,10 @@ type AnimeObj = {
   aired: { string: string };
 };
 
-export { ID, DataObj, AnimeObj };
+type CommandsObj = {
+  [key in string] : string | Array<string> | Array<RegExp> | RegExp
+};
+
+export {
+  ID, DataObj, AnimeObj, CommandsObj,
+};

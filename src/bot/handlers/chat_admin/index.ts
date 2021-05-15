@@ -46,6 +46,7 @@ ${textToEmoji('green_snowflake')} /anime - рандомное аниме\n
 ${textToEmoji('green_snowflake')} /meme - рандомное meme\n
 ${textToEmoji('green_snowflake')} /games_info - показать текущие раздачи в ЕГС магазине\n
 ${textToEmoji('green_snowflake')} бот когда / бот инфо - узнать  вероятность или дату чего либо, пример "бот когда рак свиснет"\n
+${textToEmoji('green_snowflake')} бот погода город_нейм, узнать погоду на сегодня\n
 ${textToEmoji('green_snowflake')} /rules - показать правила\n`;
   context.reply(helpString);
 };

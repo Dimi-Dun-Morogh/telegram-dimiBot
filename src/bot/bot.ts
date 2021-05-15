@@ -19,9 +19,15 @@ import {
   handleWhen, handleWho, handleInfo, handleRandomReply,
 } from './handlers/chat_random';
 import handleMeme from './handlers/get_meme';
+import COMMANDS from './commands';
+import handleWeather from './handlers/weather';
 
 const NAMESPACE = 'bot';
 const bot = new Telegraf(config.botApiKey!);
+
+const {
+  INFO, WHEN, RANDOM_REPLY, WEATHER,
+} = COMMANDS;
 
 // greeting & leave events
 bot.on('new_chat_members', (ctx) => handleJoin(ctx));
@@ -30,8 +36,6 @@ bot.on('left_chat_member', (ctx) => handleLeave(ctx));
 // MiddleWare на чек диалога (!приват)
 bot.use(isInGroupMiddleWare());
 // bot.use(isChatDBCreated());
-
-// bot.command('greeter', (ctx) => ctx.scene.enter('greeter'));
 
 //  /start здесь cоздаем новый чат в ДБ либо говорим что он создан/добавьте бота в чат
 bot.start((ctx) => handleStart(ctx));
@@ -68,11 +72,13 @@ bot.command('/meme', (ctx) => handleMeme(ctx));
 
 // bot.hears(/^бот кто\W+/g, (ctx) => handleWho(ctx)); //! todo
 
-bot.hears(/^бот когда\W+/g, (ctx) => handleWhen(ctx));
+bot.hears(WHEN, (ctx) => handleWhen(ctx));
 
-bot.hears(/^бот инфа\W+/g, (ctx) => handleInfo(ctx));
+bot.hears(INFO, (ctx) => handleInfo(ctx));
 
-bot.hears(['да', 'Да', 'ДА', 'нет', 'Нет', 'НЕТ', 'незнаю', 'не знаю', 'Че', 'че', 'ЧЕ'], (ctx) => handleRandomReply(ctx));
+bot.hears(RANDOM_REPLY, (ctx) => handleRandomReply(ctx));
+
+bot.hears(WEATHER, (ctx) => handleWeather(ctx));
 
 // cлушаем ивент "сообщение" здесь можно будет записывать все сообщения в ДБ.
 bot.on('message', (ctx) => {
