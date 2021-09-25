@@ -1,4 +1,5 @@
 import { TelegrafContext } from 'telegraf/typings/context';
+import logger from '../../../helpers/loggers';
 
 const fetch = require('node-fetch');
 const cheerio = require('cheerio');
@@ -20,6 +21,6 @@ export async function parseJokes(context: TelegrafContext) {
     const date = $('.title').first().first().text();
     context.reply(`Анекдот для ${textToEmoji('boom')}${userStr}${textToEmoji('boom')}\n\n${joke}\n\n${date}`);
   } catch (error) {
-    console.log(error.message, 'err joke');
+    logger.error('chat_jokes', 'error parsing jokes', error);
   }
 }

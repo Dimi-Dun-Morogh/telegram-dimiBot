@@ -26,7 +26,7 @@ const handleStart = async (context: TelegrafContext) => {
       return context.reply(`${context.from?.first_name} ошибка в создании бд для ${chat.title}`);
     }
   }
-  return context.reply(`${context.from?.first_name} добавь меня в чат`);
+  return context.reply(`${context.from?.first_name} добавь меня в чат`).catch((err) => logger.error(NAMESPACE, 'error', err));
 };
 
 const allMessagesCount = async (context: TelegrafContext) => {

@@ -10,7 +10,7 @@ const isInGroupMiddleWare = () => async (ctx: TelegrafContext, next: NextFunctio
   try {
     if (!ctx || !ctx.message || !ctx.message.text) return null;
     const { chat, text } = ctx.message;
-    logger.info(NAMESPACE, `chat: ${chat.id}, text: ${text}`);
+    logger.info(NAMESPACE, `chat: ${chat.id} chat_name: ${chat.title}, text: ${text}`);
     const allowedCommands = ['/help', '/joke', '/start', '/anime', '/games_info'];
     const chatCommands = ['/stat', '/stat_day', '/stat_week', '/stat_month', '/set_rules', '/rules'];
     const isChatCommand = chatCommands.some((item) => text.includes(item));

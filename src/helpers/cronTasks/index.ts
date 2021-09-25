@@ -12,7 +12,7 @@ const { phrases } = require('../textConverters');
 const NAMESPACE = 'cronTasks';
 
 const cronSayRandom = cron
-  .schedule('0 0 */12 * * *', async () => {
+  .schedule('0 0 */14 * * 4', async () => {
     logger.info(NAMESPACE, 'random sayin');
     const chats = await getAllChats();
     const chatIds = chats!.map(({ chat_id }) => chat_id);

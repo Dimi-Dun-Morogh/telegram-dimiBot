@@ -46,6 +46,6 @@ cronSayRandom.start();
 
 // epic-games
 
-setTimeout(() => epicGames.parseGames(), 40000);
+// setTimeout(() => epicGames.parseGames(), 40000);
 
-cronEGGiveAway.start();
+// cronEGGiveAway.start();

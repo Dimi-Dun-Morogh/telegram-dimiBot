@@ -16,7 +16,7 @@ import { handleAnime } from './handlers/getAnime';
 import { setRules, getRules, handleHelp } from './handlers/chat_admin';
 import { handleGiveAway } from './handlers/epic-games';
 import {
-  handleWhen, handleWho, handleInfo, handleRandomReply,
+  handleWhen, handleInfo, handleRandomReply,
 } from './handlers/chat_random';
 import handleMeme from './handlers/get_meme';
 import COMMANDS from './commands';
