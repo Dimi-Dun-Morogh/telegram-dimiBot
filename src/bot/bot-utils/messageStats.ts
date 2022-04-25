@@ -18,13 +18,12 @@ const messageStats = {
   wordStats(messages: Array<InewMessage>) {
     const wordStat = this.countMostUsedWords(messages);
 
-    let strResult = `${textToEmoji('lightning')} Топ ${textToEmoji(10)} слов: \n`;
+    let strResult = `${textToEmoji('lightning')} Топ ${textToEmoji(15)} слов:
+     \n`;
 
-    // filter wordStat to have only 10 indexes and sort by most used;
     Object.entries(wordStat)
-      .sort((a, b) => b[1] - a[1])
-      .filter((word, index) => index < 10)
-      .forEach(([word, count]) => (strResult += `${textToEmoji('pin2')} ${word} : ${count}\n`));
+      .filter((word, index) => index < 15)
+      .forEach(([word, count]) => (strResult += `${textToEmoji('pin2')} ${textToEmoji(count.count)} - ${word}  :   [ ${count.items.join(', ')} ]\n`));
     return strResult;
   },
 
@@ -44,18 +43,48 @@ const messageStats = {
     return countMsgs;
   },
 
-  countMostUsedWords: (msgArray: Array<InewMessage>): IwordStat => msgArray.reduce((acc: any, { text = '' }) => {
-    // удалим \n .replaceAll('\n', ' ') и ,!.
-    const words = text
+  // countMostUsedWords: (msgArray: Array<InewMessage>): IwordStat => msgArray.reduce((acc: any, { text = '' }) => {
+  //   // console.log(msgArray)
+  //   // удалим \n .replaceAll('\n', ' ') и ,!.
+  //   const words = text
+  //     .replace(/\n/g, ' ')
+  //     .replace(/[.,?!]/g, '')
+  //     .split(' ');
+  //   // console.log(words.filter((word) => word.length > 5));
+  //   words.forEach((word) => {
+  //     const wordLc = word.toLowerCase();
+  //     if (word.length > 2) acc[wordLc] = acc[wordLc] + 1 || 1;
+  //   });
+  //   return acc;
+  // }, {}),
+  countMostUsedWords: (msgArray: Array<InewMessage>): IwordStat => {
+    const AllMsgs = msgArray.map((msg) => msg.text.toLowerCase()).join(' ')
       .replace(/\n/g, ' ')
       .replace(/[.,?!]/g, '')
-      .split(' ');
-    words.forEach((word) => {
-      const wordLc = word.toLowerCase();
-      if (word.length > 2) acc[wordLc] = acc[wordLc] + 1 || 1;
+      .split(' ')
+      .filter((word:string) => word.length >= 5);
+
+    //! соберем ключи
+    const keysForStats = AllMsgs.reduce((acc, word:string) => {
+      const key = word.slice(0, 5);
+      acc[key] = { count: 0, items: [] };
+      return acc;
+    }, {} as IwordStat);
+
+    //* 'стати': { count: 2, items: [ 'статистику' ] },
+    //* 'время': { count: 2, items: [ 'время' ] },
+    Object.keys(keysForStats).forEach((key) => {
+      const targetMessages = AllMsgs.filter((word:string) => {
+        if (word.slice(0, 5) === key) return word;
+      });
+      keysForStats[key].count = targetMessages.length;
+      keysForStats[key].items = [...new Set(targetMessages)];
     });
-    return acc;
-  }, {}),
+
+    const sorted = Object.entries(keysForStats).sort((a, b) => b[1].count - a[1].count);
+
+    return Object.fromEntries(sorted);
+  },
 };
 
 export { messageStats };

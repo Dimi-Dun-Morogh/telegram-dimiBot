@@ -87,6 +87,7 @@ const getMyStats = async (context: TelegrafContext) => {
     if (!messages) return context.reply('что-то с ботом или у вас нет сообщений');
 
     const stats = renderMsg.myStatsStr(messages);
+
     return context.reply(stats);
   } catch (error) {
     logger.error(NAMESPACE, error.message, error);

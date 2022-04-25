@@ -11,6 +11,8 @@ const {
 
 const myStatsStr = (messages: Array<InewMessage>) => {
   const wordStat = messageStats.wordStats(messages);
+
+
   const dateFirstMsg = new Date(messages[0].date * 1000);
   return `статистика для ${textToEmoji('saintsRow')}${messages[messages.length - 1].name}${textToEmoji(
     'saintsRow',

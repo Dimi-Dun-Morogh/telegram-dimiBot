@@ -29,6 +29,7 @@ const memeBank = {
       const parsedMems = await page.evaluate(() => {
         const allTexts = document.querySelectorAll('.post-img');
         if (!allTexts.length) return;
+        // @ts-ignore
         return [...allTexts].map((elem) => `https:${elem.firstElementChild!.firstElementChild!.getAttribute('src')}`);
       });
 

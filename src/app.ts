@@ -5,8 +5,7 @@ import bot from './bot/bot';
 
 import wakeUpDyno from './helpers/herokuAntiIdle';
 
-import { cronEGGiveAway, cronSayRandom } from './helpers/cronTasks';
-import { epicGames } from './bot/handlers/epic-games/giveAway';
+import { cronSayRandom } from './helpers/cronTasks';
 
 const { BotStatusHtml } = require('./helpers/utils');
 
