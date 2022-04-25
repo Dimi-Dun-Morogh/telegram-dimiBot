@@ -20,14 +20,14 @@ const myStatsStr = (messages: Array<InewMessage>) => {
 };
 
 const wordStatsStr = (messages: InewMessage[], word:string) => {
-  const wordStat = messageStats.countMostUsedWords(messages);
+  const wordStat = messageStats.countMostUsedWords(messages, word.length);
   const date = new Date(messages[0].date * 1000);
-  const stats = wordStat[word] || 0;
+  const stats = wordStat[word]?.count || 0;
   let varietyStr = '';
 
   Object.entries(wordStat)
     .filter(([key]) => key.includes(word.toLowerCase()))
-    .forEach(([key, value]) => (varietyStr += `\n${key} : ${value} ${textToEmoji('lightning')}`));
+    .forEach(([key, value]) => (varietyStr += `\n${key} : ${value.items.join(', ')} ${textToEmoji('lightning')}`));
 
   return `начиная с ${date.toLocaleDateString()} слово ${pin}"${word}"${pin} было написано ${stats} раз${textToEmoji('boom')}\n включая вариации:\n ${varietyStr}`;
 };

@@ -43,26 +43,13 @@ const messageStats = {
     return countMsgs;
   },
 
-  // countMostUsedWords: (msgArray: Array<InewMessage>): IwordStat => msgArray.reduce((acc: any, { text = '' }) => {
-  //   // console.log(msgArray)
-  //   // удалим \n .replaceAll('\n', ' ') и ,!.
-  //   const words = text
-  //     .replace(/\n/g, ' ')
-  //     .replace(/[.,?!]/g, '')
-  //     .split(' ');
-  //   // console.log(words.filter((word) => word.length > 5));
-  //   words.forEach((word) => {
-  //     const wordLc = word.toLowerCase();
-  //     if (word.length > 2) acc[wordLc] = acc[wordLc] + 1 || 1;
-  //   });
-  //   return acc;
-  // }, {}),
-  countMostUsedWords: (msgArray: Array<InewMessage>): IwordStat => {
+  countMostUsedWords: (msgArray: Array<InewMessage>, wordLength?:number): IwordStat => {
+    const daLength = wordLength || 5;
     const AllMsgs = msgArray.map((msg) => msg.text.toLowerCase()).join(' ')
       .replace(/\n/g, ' ')
       .replace(/[.,?!]/g, '')
       .split(' ')
-      .filter((word:string) => word.length >= 5);
+      .filter((word:string) => (word.length >= daLength));
 
     //! соберем ключи
     const keysForStats = AllMsgs.reduce((acc, word:string) => {
