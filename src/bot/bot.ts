@@ -31,8 +31,8 @@ const {
 } = COMMANDS;
 
 // greeting & leave events
-bot.on('new_chat_members', (ctx) => handleJoin(ctx, ctx.message as Message.NewChatMembersMessage));
-bot.on('left_chat_member', (ctx) => handleLeave(ctx, ctx.message as Message.LeftChatMemberMessage));
+// bot.on('new_chat_members', (ctx) => handleJoin(ctx, ctx.message as Message.NewChatMembersMessage));
+// bot.on('left_chat_member', (ctx) => handleLeave(ctx, ctx.message as Message.LeftChatMemberMessage));
 
 // MiddleWare на чек диалога (!приват)
 bot.use(isInGroupMiddleWare());
