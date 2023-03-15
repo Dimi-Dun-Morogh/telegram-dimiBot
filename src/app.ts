@@ -22,10 +22,11 @@ bot
   .catch((error: Error) => console.error(error));
 
 // anti idle conspiracy
+
 const URL = 'https://dimi-tg.herokuapp.com/';
 const app = express();
 
-wakeUpDyno(URL);
+//wakeUpDyno(URL);
 
 app.get('/', (request: Request, response: Response) => {
   logger.info(NAMESPACE, `${Date.now()} Ping Received`);

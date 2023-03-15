@@ -29,7 +29,7 @@ const getRules = async (context: TelegrafContext) => {
     if (!remoteChat) return null;
     const { rules } = remoteChat;
     console.log(rules);
-    if (!rules.length) return context.reply('ленивый  админ еще не установил правила');
+    if (!rules.length) return await context.reply('ленивый  админ еще не установил правила');
     context.reply(rules);
   } catch (error) {
     console.log(error.message);

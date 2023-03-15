@@ -1,4 +1,4 @@
-const replies: {[key:string]: Array<string>} = {
+const replies: { [key:string]: Array<string> } = {
   да: ['манда', 'балда', 'куй на', 'сковорода'],
   нет: ['толстой кисоньки ответ'],
   незнаю: ['ты шо дура', 'я тоже кста'],

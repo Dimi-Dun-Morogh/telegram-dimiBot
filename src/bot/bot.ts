@@ -1,5 +1,6 @@
 import { Telegraf } from 'telegraf';
 import logger from '../helpers/loggers';
+import { Message } from 'typegram';
 import {
   handleStart, writeMessageToDb, getStatsByTime, getMyStats, getWordStats,
 } from './handlers/messages/index';
@@ -30,8 +31,8 @@ const {
 } = COMMANDS;
 
 // greeting & leave events
-bot.on('new_chat_members', (ctx) => handleJoin(ctx));
-bot.on('left_chat_member', (ctx) => handleLeave(ctx));
+bot.on('new_chat_members', (ctx) => handleJoin(ctx, ctx.message as Message.NewChatMembersMessage));
+bot.on('left_chat_member', (ctx) => handleLeave(ctx, ctx.message as Message.LeftChatMemberMessage));
 
 // MiddleWare на чек диалога (!приват)
 bot.use(isInGroupMiddleWare());

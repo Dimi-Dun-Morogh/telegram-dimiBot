@@ -1,12 +1,18 @@
 import { TelegrafContext } from 'telegraf/typings/context';
 import logger from '../../../helpers/loggers';
 import { getChatByChatId } from '../../../controllers/chats';
+import { Message } from 'typegram';
+
+
+
 
 const NAMESPACE = 'chat_events';
 
-const handleLeave = (context: TelegrafContext) => {
+const handleLeave = (context: TelegrafContext, msg : Message.LeftChatMemberMessage):void => {
   try {
-    const { username, first_name, last_name } = context.update.message!.left_chat_member!;
+    const { username, first_name, last_name } = msg.left_chat_member!;
+
+
     // console.log(context.update.message?.left_chat_member);
     const farewells = ['...A! Ну давай', 'ПАЛ ДЕВОЧКА', 'ЯСНА БАН', 'БАН НАХОЙ', 'Пал дебил'];
     const randomBye = farewells[Math.floor(Math.random() * farewells.length)];
@@ -16,10 +22,11 @@ const handleLeave = (context: TelegrafContext) => {
   }
 };
 
-const handleJoin = async (context: TelegrafContext) => {
+const handleJoin = async (context: TelegrafContext, msg: Message.NewChatMembersMessage):Promise<void|null> => {
   try {
-    const { username, first_name, last_name } = context.update.message!.new_chat_members?.pop()!;
+    const { username, first_name, last_name, is_bot } = msg.new_chat_members.pop()!;
 
+    if (is_bot) return;
     logger.info(NAMESPACE, `new chat member @${username} | ${`${first_name} ${last_name}`}`);
 
     context.reply(`Приветствую ${!first_name ? username : first_name} ${!last_name ? '' : last_name}, проходи, присаживайся`);

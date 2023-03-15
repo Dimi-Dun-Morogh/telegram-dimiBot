@@ -31,7 +31,7 @@ interface IusersStat {
   userId: IuserStatSingle;
 }
 
-interface IwordStat {[key:string]:{count:number, items: string[]}}
+interface IwordStat {[key:string]:{ count:number, items: string[] }}
 
 export {
   InewChat, IChatModel, ImessageModel, InewMessage, IusersStat, IwordStat,

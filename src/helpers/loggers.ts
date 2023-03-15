@@ -15,7 +15,7 @@ class Logger {
     console.log(`${this.getTimeStamp()} [INFO] [${namespace}] [${message}]`, object || '');
   }
 
-  error(namespace: string, message: string, object?: any) {
+  error(namespace: string, message: string|any, object?: any) {
     console.error(`${this.getTimeStamp()} [ERROR] [${namespace}] [${message}]`, object || '');
   }
 }

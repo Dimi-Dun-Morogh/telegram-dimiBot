@@ -12,7 +12,6 @@ const {
 const myStatsStr = (messages: Array<InewMessage>) => {
   const wordStat = messageStats.wordStats(messages);
 
-
   const dateFirstMsg = new Date(messages[0].date * 1000);
   return `статистика для ${textToEmoji('saintsRow')}${messages[messages.length - 1].name}${textToEmoji(
     'saintsRow',
@@ -51,7 +50,7 @@ ${weatherStats}
   `;
 };
 
-const giveAway = (obj: {[key:string]: {[key:string]: string}}) => {
+const giveAway = (obj: { [key:string]: { [key:string]: string } }) => {
   const games = Object.entries(obj).reduce((acc, [title, { date, link }]) => {
     const res = `${textToEmoji('pin')}${title} : ${date}\nссылка - ${link}\n`;
     let newAcc = acc;

@@ -18,10 +18,10 @@ const handleStart = async (context: TelegrafContext) => {
           name: chat.title!,
           chat_id: chat.id,
         });
-        return context.reply(`${context.from?.first_name} я создал бд для ${chat.title}`);
+        return await context.reply(`${context.from?.first_name} я создал бд для ${chat.title}`);
       }
-      return context.reply(`${context.from?.first_name} база данных для ${chat.title} уже была создана`);
-    } catch (error) {
+      return await context.reply(`${context.from?.first_name} база данных для ${chat.title} уже была создана`);
+    } catch (error:any) {
       logger.error(NAMESPACE, error.message, error);
       return context.reply(`${context.from?.first_name} ошибка в создании бд для ${chat.title}`);
     }
@@ -32,13 +32,13 @@ const handleStart = async (context: TelegrafContext) => {
 const allMessagesCount = async (context: TelegrafContext) => {
   try {
     const messages = await getChatMessages(context.message?.chat.id!);
-    return context.reply(`сообщений за всё время ${messages!.length}`);
-  } catch (error) {
+    return await context.reply(`сообщений за всё время ${messages!.length}`);
+  } catch (error:any) {
     logger.error(NAMESPACE, error.message, error);
   }
   return null;
 };
-
+ 
 const writeMessageToDb = (context: TelegrafContext) => {
   const {
     text, chat, caption, from, date,
@@ -71,7 +71,7 @@ const MessagesByTime = async (chatId: number, timeRange: string) => {
 
     const messages = await getChatMessagesByTime(chatId, Number(todaysMidnight) / 1000);
     return messages;
-  } catch (error) {
+  } catch (error:any) {
     logger.error(NAMESPACE, error.message, error);
   }
 };
@@ -84,12 +84,12 @@ const getMyStats = async (context: TelegrafContext) => {
       (msg) => msg.user_id === from?.id,
     ));
 
-    if (!messages) return context.reply('что-то с ботом или у вас нет сообщений');
+    if (!messages) return await context.reply('что-то с ботом или у вас нет сообщений');
 
     const stats = renderMsg.myStatsStr(messages);
 
-    return context.reply(stats);
-  } catch (error) {
+    return await context.reply(stats);
+  } catch (error:any) {
     logger.error(NAMESPACE, error.message, error);
   }
 };
@@ -117,7 +117,7 @@ const getStatsByTime = async (context: TelegrafContext, timeRange: string) => {
 
     const stats = renderMsg.statsByTimeStr(messages, timeRange);
     context.reply(stats);
-  } catch (error) {
+  } catch (error:any) {
     logger.error(NAMESPACE, error.message, error);
   }
 };
