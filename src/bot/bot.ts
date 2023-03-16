@@ -42,34 +42,34 @@ bot.use(isInGroupMiddleWare());
 bot.start((ctx) => handleStart(ctx));
 
 //! посчитаем кол-во всех сообщений
-bot.command('/stat', (ctx) => getStatsByTime(ctx, 'all time'));
+bot.hears(/^\/stat/, (ctx) => getStatsByTime(ctx, 'all time'));
 
-bot.command('/stat_day', (ctx) => getStatsByTime(ctx, 'day'));
+bot.hears(/^\/stat_day/ , (ctx) => getStatsByTime(ctx, 'day'));
 
-bot.command('/stat_week', (ctx) => getStatsByTime(ctx, 'week'));
+bot.hears(/^\/stat_week/, (ctx) => getStatsByTime(ctx, 'week'));
 
-bot.command('/stat_month', (ctx) => getStatsByTime(ctx, 'month'));
+bot.hears(/^\/stat_month/, (ctx) => getStatsByTime(ctx, 'month'));
 
-bot.command('/set_rules', (ctx) => setRules(ctx));
+bot.hears(/^\/set_rules/, (ctx) => setRules(ctx));
 
-bot.command('/rules', (ctx) => getRules(ctx));
+bot.hears(/^\/rules/, (ctx) => getRules(ctx));
 
-bot.command('/help', (ctx) => handleHelp(ctx));
+bot.hears(/^\/help/, (ctx) => handleHelp(ctx));
 
-bot.command('/joke', (ctx) => parseJokes(ctx));
+bot.hears(/^\/joke/, (ctx) => parseJokes(ctx));
 
-bot.command('/stat_me', (ctx) => getMyStats(ctx));
+bot.hears(/^\/stat_me/, (ctx) => getMyStats(ctx));
 
-bot.command('/stat_word', (ctx) => getWordStats(ctx));
+bot.hears(/^\/stat_word/, (ctx) => getWordStats(ctx));
 
-bot.command('/anime', (ctx) => {
+bot.hears(/^\/anime/, (ctx) => {
   logger.info(NAMESPACE, `/anime in chat:${ctx.chat!.id!}`);
   handleAnime(ctx);
 });
 
-bot.command('/games_info', (ctx) => handleGiveAway(ctx));
+//bot.command('/games_info', (ctx) => handleGiveAway(ctx));
 
-bot.command('/meme', (ctx) => handleMeme(ctx));
+//bot.command('/meme', (ctx) => handleMeme(ctx));
 
 // bot.hears(/^бот кто\W+/g, (ctx) => handleWho(ctx)); //! todo
 
