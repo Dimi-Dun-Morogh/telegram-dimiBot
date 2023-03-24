@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const telegramConfig = {
-  botApiKey: process.env.tg_bot_token,
+  botApiKey: process.env.NODE_ENV === 'production' ? process.env.tg_bot_token : process.env.dev_bot_token,
   weatherApiKey: process.env.weather_app_token,
 };
 

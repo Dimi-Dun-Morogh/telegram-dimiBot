@@ -38,10 +38,10 @@ const getRules = async (context: TelegrafContext) => {
 
 const handleHelp = (context: TelegrafContext) => {
   const helpString = `${textToEmoji('lightning')}Список комманд${textToEmoji('lightning')}\n
-${textToEmoji('green_snowflake')} /stat - вернет статистику по чату за всё время\n
-${textToEmoji('green_snowflake')} /stat_day , /stat_week , /stat_month - тоже самое но за день/7дней/30дней\n
+${textToEmoji('green_snowflake')} стата - вернет статистику по чату за всё время\n
+${textToEmoji('green_snowflake')} стата день , стата неделя , /стата месяц - тоже самое но за день/7дней/30дней\n
 ${textToEmoji('green_snowflake')} /set_rules - установить правила чата( /set_rules любой текст) доступно только админам\n
-${textToEmoji('green_snowflake')} /joke - рассказать анекдот\n
+${textToEmoji('green_snowflake')} анекдот - рассказать анекдот\n
 ${textToEmoji('green_snowflake')} /anime - рандомное аниме\n
 ${textToEmoji('green_snowflake')} /meme - рандомное meme\n
 ${textToEmoji('green_snowflake')} /games_info - показать текущие раздачи в ЕГС магазине\n

@@ -38,7 +38,7 @@ const allMessagesCount = async (context: TelegrafContext) => {
   }
   return null;
 };
- 
+
 const writeMessageToDb = (context: TelegrafContext) => {
   const {
     text, chat, caption, from, date,
@@ -106,7 +106,7 @@ const getWordStats = async (context: TelegrafContext) => {
   return context.reply(stats);
 };
 
-const getStatsByTime = async (context: TelegrafContext, timeRange: string) => {
+const getStatsByTime = async (context: TelegrafContext, timeRange:string) => {
   try {
     const {
       chat: { id },

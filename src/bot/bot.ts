@@ -42,13 +42,17 @@ bot.use(isInGroupMiddleWare());
 bot.start((ctx) => handleStart(ctx));
 
 //! посчитаем кол-во всех сообщений
-bot.hears(/^\/stat/, (ctx) => getStatsByTime(ctx, 'all time'));
+bot.hears('стата', (ctx) =>getStatsByTime(ctx, 'all time'),
+);
 
-bot.hears(/^\/stat_day/ , (ctx) => getStatsByTime(ctx, 'day'));
+bot.hears('стата день', (ctx) =>getStatsByTime(ctx, 'day'),
+);
 
-bot.hears(/^\/stat_week/, (ctx) => getStatsByTime(ctx, 'week'));
+bot.hears('стата неделя', (ctx) =>getStatsByTime(ctx, 'week'),
+);
 
-bot.hears(/^\/stat_month/, (ctx) => getStatsByTime(ctx, 'month'));
+bot.hears('стата месяц', (ctx) =>getStatsByTime(ctx, 'month'),
+);
 
 bot.hears(/^\/set_rules/, (ctx) => setRules(ctx));
 
@@ -56,11 +60,11 @@ bot.hears(/^\/rules/, (ctx) => getRules(ctx));
 
 bot.hears(/^\/help/, (ctx) => handleHelp(ctx));
 
-bot.hears(/^\/joke/, (ctx) => parseJokes(ctx));
+bot.hears('анекдот', (ctx) => parseJokes(ctx));
 
-bot.hears(/^\/stat_me/, (ctx) => getMyStats(ctx));
+bot.hears('моя стата', (ctx) => getMyStats(ctx));
 
-bot.hears(/^\/stat_word/, (ctx) => getWordStats(ctx));
+bot.hears(/^\слово/, (ctx) => getWordStats(ctx));
 
 bot.hears(/^\/anime/, (ctx) => {
   logger.info(NAMESPACE, `/anime in chat:${ctx.chat!.id!}`);

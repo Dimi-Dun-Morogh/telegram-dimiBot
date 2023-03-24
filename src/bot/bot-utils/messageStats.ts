@@ -49,7 +49,10 @@ const messageStats = {
       .replace(/\n/g, ' ')
       .replace(/[.,?!]/g, '')
       .split(' ')
-      .filter((word:string) => (word.length >= daLength));
+      .filter((word:string) => {
+
+        return (word.length >= daLength && word.indexOf('http') === -1  && isNaN(+word));
+      });
 
     //! соберем ключи
     const keysForStats = AllMsgs.reduce((acc, word:string) => {
