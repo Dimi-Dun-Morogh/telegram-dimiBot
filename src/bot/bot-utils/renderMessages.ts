@@ -71,8 +71,11 @@ class RenderMsg {
     const wordStatString = messageStats.wordStats(messages);
     const userStatString = messageStats.userStats(messages);
 
-    return `${saintsRow}Cообщений за ${this.dictionary[timeRange]} - ${textToEmoji(messages.length)}\n
+    const stats = `${saintsRow}Cообщений за ${this.dictionary[timeRange]} - ${textToEmoji(messages.length)}\n
     ${userStatString}\n${small_triangle + small_triangle + small_triangle + small_triangle}\n\n${wordStatString}`;
+
+    const encoded = Buffer.from(stats, 'utf-8').toString();
+    return encoded;
   }
 
   wordStatsStr = wordStatsStr;

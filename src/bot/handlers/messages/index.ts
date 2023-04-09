@@ -40,9 +40,11 @@ const allMessagesCount = async (context: TelegrafContext) => {
 };
 
 const writeMessageToDb = (context: TelegrafContext) => {
+  if (context.message?.forward_date) return;
   const {
     text, chat, caption, from, date,
   } = context.message!;
+  if (from?.is_bot) return;
   if ((text || caption) && (chat.type === 'group' || chat.type === 'supergroup')) {
     const msgString = typeof text === 'string' ? text : caption;
 
