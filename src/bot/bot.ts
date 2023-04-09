@@ -27,7 +27,7 @@ const NAMESPACE = 'bot';
 const bot = new Telegraf(config.botApiKey!);
 
 const {
-  INFO, WHEN, RANDOM_REPLY, WEATHER,
+  INFO, WHEN, RANDOM_REPLY, WEATHER, JOKE, WORD, STATS, STATS_DAY, STATS_WEEK, STATS_MONTH,
 } = COMMANDS;
 
 // greeting & leave events
@@ -42,16 +42,16 @@ bot.use(isInGroupMiddleWare());
 bot.start((ctx) => handleStart(ctx));
 
 //! посчитаем кол-во всех сообщений
-bot.hears('стата', (ctx) =>getStatsByTime(ctx, 'all time'),
+bot.hears(STATS, (ctx) =>getStatsByTime(ctx, 'all time'),
 );
 
-bot.hears('стата день', (ctx) =>getStatsByTime(ctx, 'day'),
+bot.hears(STATS_DAY, (ctx) =>getStatsByTime(ctx, 'day'),
 );
 
-bot.hears('стата неделя', (ctx) =>getStatsByTime(ctx, 'week'),
+bot.hears(STATS_WEEK, (ctx) =>getStatsByTime(ctx, 'week'),
 );
 
-bot.hears('стата месяц', (ctx) =>getStatsByTime(ctx, 'month'),
+bot.hears(STATS_MONTH, (ctx) =>getStatsByTime(ctx, 'month'),
 );
 
 bot.hears(/^\/set_rules/, (ctx) => setRules(ctx));
@@ -60,11 +60,11 @@ bot.hears(/^\/rules/, (ctx) => getRules(ctx));
 
 bot.hears(/^\/help/, (ctx) => handleHelp(ctx));
 
-bot.hears('анекдот', (ctx) => parseJokes(ctx));
+bot.hears(JOKE, (ctx) => parseJokes(ctx));
 
 bot.hears('моя стата', (ctx) => getMyStats(ctx));
 
-bot.hears(/^\слово/, (ctx) => getWordStats(ctx));
+bot.hears(WORD, (ctx) => getWordStats(ctx));
 
 bot.hears(/^\/anime/, (ctx) => {
   logger.info(NAMESPACE, `/anime in chat:${ctx.chat!.id!}`);

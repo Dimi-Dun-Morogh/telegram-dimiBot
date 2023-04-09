@@ -56,7 +56,8 @@ const messageStats = {
 
     //! соберем ключи
     const keysForStats = AllMsgs.reduce((acc, word:string) => {
-      const key = word.slice(0, 5);
+      // const key = word.slice(0, 5);
+      const key = word;
       acc[key] = { count: 0, items: [] };
       return acc;
     }, {} as IwordStat);
@@ -65,7 +66,8 @@ const messageStats = {
     //* 'время': { count: 2, items: [ 'время' ] },
     Object.keys(keysForStats).forEach((key) => {
       const targetMessages = AllMsgs.filter((word:string) => {
-        if (word.slice(0, 5) === key) return word;
+        if (word.slice(0, 5) === key.slice(0, 5)) return word;
+        //if (word.indexOf(key) || key.indexOf(word)) return word;
       });
       keysForStats[key].count = targetMessages.length;
       keysForStats[key].items = [...new Set(targetMessages)];

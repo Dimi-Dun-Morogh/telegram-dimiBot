@@ -26,9 +26,9 @@ const wordStatsStr = (messages: InewMessage[], word:string) => {
 
   Object.entries(wordStat)
     .filter(([key]) => key.includes(word.toLowerCase()))
-    .forEach(([key, value]) => (varietyStr += `\n${key} : ${value.items.join(', ')} ${textToEmoji('lightning')}`));
+    .forEach(([key, value]) => (varietyStr += `\n${key} : ${value.count} -  ${value.items.join(', ')} ${textToEmoji('lightning')}`));
 
-  return `начиная с ${date.toLocaleDateString()} слово ${pin}"${word}"${pin} было написано ${stats} раз${textToEmoji('boom')}\n включая вариации:\n ${varietyStr}`;
+  return `начиная с ${date.toLocaleDateString()} слово ${pin}"${word}"${pin} было написано ${stats} раз${textToEmoji('boom')}\n а так же вариации:\n ${varietyStr}`;
 };
 
 const weatherString = (obj: ISerialized) => {
