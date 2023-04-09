@@ -10,7 +10,7 @@ const NAMESPACE = 'controllers/messages';
 const createMessage = async (messageObj: InewMessage) => {
   try {
     const newMsg = await createItem(message, messageObj);
-    logger.info(NAMESPACE, `created new msg with text "${messageObj.text}"`);
+    //   logger.info(NAMESPACE, `created new msg with text "${messageObj.text}"`);
     chatState.latestMessage = `чат id: ${messageObj.chat_id}, username: ${messageObj.userName}, text: ${messageObj.text}`;
     return newMsg;
   } catch (error) {

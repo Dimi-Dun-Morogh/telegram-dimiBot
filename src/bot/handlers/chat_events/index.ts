@@ -22,7 +22,7 @@ const handleLeave = (context: TelegrafContext, msg : Message.LeftChatMemberMessa
   }
 };
 
-const handleJoin = async (context: TelegrafContext, msg: Message.NewChatMembersMessage):Promise<void|null> => {
+const handleJoin = async (context: TelegrafContext, msg: Message.NewChatMembersMessage):Promise<void | null> => {
   try {
     const { username, first_name, last_name, is_bot } = msg.new_chat_members.pop()!;
 

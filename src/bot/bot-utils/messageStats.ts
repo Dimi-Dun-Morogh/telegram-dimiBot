@@ -45,6 +45,7 @@ const messageStats = {
 
   countMostUsedWords: (msgArray: Array<InewMessage>, wordLength?:number): IwordStat => {
     const daLength = wordLength || 5;
+    console.log('1 etap countMostUsedWords');
     const AllMsgs = msgArray.map((msg) => msg.text.toLowerCase()).join(' ')
       .replace(/\n/g, ' ')
       .replace(/[.,?!]/g, '')
@@ -53,25 +54,30 @@ const messageStats = {
 
         return (word.length >= daLength && word.indexOf('http') === -1  && isNaN(+word));
       });
-
+    console.log('2 etap');
     //! соберем ключи
     const keysForStats = AllMsgs.reduce((acc, word:string) => {
-      // const key = word.slice(0, 5);
-      const key = word;
+      const key = word.slice(0, 5);
+      // const key = word;
       acc[key] = { count: 0, items: [] };
       return acc;
     }, {} as IwordStat);
 
+
+    console.time('3rd step');
     //* 'стати': { count: 2, items: [ 'статистику' ] },
     //* 'время': { count: 2, items: [ 'время' ] },
-    Object.keys(keysForStats).forEach((key) => {
-      const targetMessages = AllMsgs.filter((word:string) => {
-        if (word.slice(0, 5) === key.slice(0, 5)) return word;
-        //if (word.indexOf(key) || key.indexOf(word)) return word;
-      });
-      keysForStats[key].count = targetMessages.length;
-      keysForStats[key].items = [...new Set(targetMessages)];
+
+    AllMsgs.forEach(word=>{
+      const key = word.slice(0, 5);
+      keysForStats[key].count += 1;
+      keysForStats[key].items = [...new Set([...keysForStats[key].items, word])];
     });
+
+    const used = process.memoryUsage().heapUsed / 1024 / 1024;
+    console.log(`The script uses approximately ${used} MB`);
+    console.timeEnd('3rd step');
+
 
     const sorted = Object.entries(keysForStats).sort((a, b) => b[1].count - a[1].count);
 

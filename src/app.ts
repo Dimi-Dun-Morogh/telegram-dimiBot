@@ -33,9 +33,7 @@ app.get('/bot-status', (request: Request, response: Response) => {
 });
 
 connectDb().then(() => {
-  // app.listen(process.env.PORT || 3111, () => {
 
-  // });
   logger.info(NAMESPACE, 'connect to db success');
   if (process.env.NODE_ENV === 'production') {
     app.use(express.json());
